@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.supabase.kt)
     implementation(libs.supabase.postgrest)
     implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation("com.google.accompanist:accompanist-pager:0.34.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
     // MapmyIndia SDK
 // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.6.0")
@@ -90,6 +92,10 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-nearby:18.5.0")
     implementation("androidx.fragment:fragment-ktx:1.8.9")
+
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
 
 
 }

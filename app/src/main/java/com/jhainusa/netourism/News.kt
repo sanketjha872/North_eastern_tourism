@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.ui.theme.NETourismTheme
+import com.jhainusa.netourism.ui.theme.blue
 
 // Assuming poppinsmedium.ttf is in res/font
 val poppinsNews = FontFamily(
@@ -102,37 +103,21 @@ fun NewsScreen(navController: NavController) {
                 TopAppBar(
                     title = {
                         Text(
-                            "North East Updates",
+                            "Local News & Alerts",
                             fontFamily = poppinsNews,
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp
                         )
+
+
                     },
                     actions = {
                         IconButton(onClick = { /* TODO: Settings */ }) {
-                            Icon(Icons.Default.Settings, contentDescription = "Settings")
+                            Icon(painter = painterResource(R.drawable.news_feed_2_svgrepo_com), contentDescription = "Settings")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.White
-                    )
-                )
-                OutlinedTextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
-                    label = { Text("Search news", fontFamily = poppinsNews) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    shape = RoundedCornerShape(32.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        disabledContainerColor = Color.White,
-                        cursorColor = Color.Black,
-                        focusedBorderColor = Color.LightGray,
-                        unfocusedBorderColor = Color.LightGray,
                     )
                 )
             }
@@ -147,8 +132,8 @@ fun NewsScreen(navController: NavController) {
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val chips = listOf("All", "Safety Alerts", "Travel", "Culture")
-                items(chips){ chipText ->
+                val chips = listOf("All", "Safety Alerts","Weather", "Travel", "Culture")
+                items(chips,){ chipText ->
                     val isSelected = selectedChip == chipText
                     Chip(
                         label = chipText,
@@ -156,6 +141,7 @@ fun NewsScreen(navController: NavController) {
                         onClick = { selectedChip = chipText },
                         isSafetyAlert = chipText == "Safety Alerts"
                     )
+                    Spacer(modifier = Modifier.width(6.dp))
                 }
             }
 
@@ -174,30 +160,17 @@ fun NewsScreen(navController: NavController) {
 
 @Composable
 fun Chip(label: String, isSelected: Boolean, onClick: () -> Unit, isSafetyAlert: Boolean) {
-    Button(
+    FilterChip(
+        selected = isSelected,
+        shape = RoundedCornerShape(14.dp),
         onClick = onClick,
-        shape = RoundedCornerShape(20.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) {
-                if (isSafetyAlert) Color.Red.copy(alpha = 0.8f) else MaterialTheme.colorScheme.primary
-            } else {
-                Color.White
-            },
-            contentColor = if (isSelected) Color.White else Color.Black
-        ),
-        elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
-    ) {
-        if (isSafetyAlert && isSelected) {
-            Icon(
-                Icons.Default.Warning,
-                contentDescription = "Safety Alert",
-                modifier = Modifier.size(18.dp),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-        }
-        Text(label, fontSize = 14.sp, fontFamily = poppinsNews)
-    }
+        label = { Text(label, fontFamily = poppinsNews) },
+        colors = FilterChipDefaults.filterChipColors(
+            selectedContainerColor = blue,
+            selectedLabelColor = Color.White,
+            containerColor = Color.White,
+        )
+    )
 }
 
 
@@ -219,13 +192,13 @@ fun NewsCard(article: NewsArticle) {
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = article.imageResId),
                 contentDescription = article.title,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(100.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -296,7 +269,7 @@ fun NewsCard(article: NewsArticle) {
                         fontFamily = poppinsNews
                     )
                     Icon(
-                        Icons.Filled.Warning,
+                        painter = painterResource(R.drawable.bookmark_svgrepo_com__2_),
                         contentDescription = "Bookmark",
                         tint = Color.Gray,
                         modifier = Modifier.size(20.dp)

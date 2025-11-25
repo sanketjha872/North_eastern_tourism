@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -30,18 +31,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NETourism">
-        <meta-data
-            android:name="com.mapmyindia.sdk.restAPIKey"
-            android:value="YOUR_REST_API_KEY" />
-        <meta-data
-            android:name="com.mapmyindia.sdk.mapSDKKey"
-            android:value="YOUR_MAP_SDK_KEY" />
-        <meta-data
-            android:name="com.mapmyindia.sdk.atlasClientId"
-            android:value="YOUR_ATLAS_CLIENT_ID" />
-        <meta-data
-            android:name="com.mapmyindia.sdk.atlasClientSecret"
-            android:value="YOUR_ATLAS_CLIENT_SECRET" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

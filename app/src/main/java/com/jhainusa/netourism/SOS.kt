@@ -1,3 +1,4 @@
+
 package com.jhainusa.netourism
 
 import android.app.Activity
@@ -275,7 +276,7 @@ fun SOSButton() {
                     .background(outerColor.copy(alpha = 0.5f))
             )
         } else {
-             Box(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(outerColor.copy(alpha = 0.2f))

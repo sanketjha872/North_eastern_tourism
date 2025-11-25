@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
+import kotlinx.serialization.json.Json
 
 class ChatViewModel(private val context: Context,private val prefsManager: UserPreferencesManager) : ViewModel() {
 
@@ -39,6 +40,8 @@ class ChatViewModel(private val context: Context,private val prefsManager: UserP
         private set
 
     lateinit var nearby: NearbyManager
+
+    private val json = Json { ignoreUnknownKeys = true }
 
 
 
@@ -48,7 +51,7 @@ class ChatViewModel(private val context: Context,private val prefsManager: UserP
             onReceive = {
                 receiveMessage(it)
 
-                        },
+            },
             onConnected = { addSystem("Connected!") }
         )
     }
@@ -77,7 +80,6 @@ class ChatViewModel(private val context: Context,private val prefsManager: UserP
 
     fun receiveMessage(text: String) {
         messages.add(ChatMessage(text, false))
-
     }
 }
 data class ChatMessage(
@@ -138,6 +140,3 @@ fun MessageBubble(msg: ChatMessage) {
         )
     }
 }
-
-
-

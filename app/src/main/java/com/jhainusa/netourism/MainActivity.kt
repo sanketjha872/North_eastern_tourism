@@ -79,9 +79,9 @@ class MainActivity : ComponentActivity() {
                     AnimatedNavHost(
 
                         navController = navController,
-                        startDestination =
+                        startDestination = 
                             if (prefsManager.hasUser()) "AllScreenNav"
-                            else "login",
+                            else "OnboardingScreen",
 
                         enterTransition = {
                             slideIntoContainer(
@@ -110,6 +110,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("AllScreenNav") {
                             MainApp(navController, MeshCore.chatViewModel)
+                        }
+                        composable("OnboardingScreen") {
+                            OnboardingScreen(navController)
                         }
                     }
                 }

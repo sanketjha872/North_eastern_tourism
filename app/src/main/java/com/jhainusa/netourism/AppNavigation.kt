@@ -25,6 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.ML.EmergencyClassifierScreen
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
+import com.jhainusa.netourism.UserPreferences.OsmMapScreen
 
 // Define Poppins font family (assuming poppinsmedium.ttf in res/font)
 val poppinsFontFamilyAppNav = FontFamily(
@@ -101,7 +102,7 @@ fun AppNavigationHost(navController: NavHostController, innerPadding: PaddingVal
     ) {
         composable(Screen.News.route) { NewsScreen(navController)} // Assuming OnboardingScreen is the new Login/News screen
         composable(Screen.Home.route) { FirstPageScreen(mainNav) } // Assuming FirstPageScreen is your home screen content
-        composable(Screen.Map.route) { EmergencyClassifierScreen()} //JourneyTimelineScreen(navController) }
+        composable(Screen.Map.route) { OsmMapScreen()} //JourneyTimelineScreen(navController) }
         composable(Screen.Panic.route) { SOSScreen(navController,viewModel) }
         composable(Screen.Profile.route) {ProfileScreen(navController)}
     }

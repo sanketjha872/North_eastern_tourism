@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -19,9 +20,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.ui.theme.NETourismTheme
+import com.jhainusa.netourism.ui.theme.blue
 import kotlinx.coroutines.launch
 
 val poppinsFontFamily1 = FontFamily(
@@ -51,19 +55,10 @@ data class RecommendedPlaceData(
     var isFavorite: Boolean
 )
 
-// Sample Data (Replace R.drawable.placeholder_image and R.drawable.activity_placeholder with actual drawables)
-val sampleActivities = listOf(
-    ActivityItemData("Hiking", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash),
-    ActivityItemData("Biking", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash),
-    ActivityItemData("Climbing", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash),
-    ActivityItemData("Running", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash),
-    ActivityItemData("Jumping", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash)
-)
-
 val sampleRecommendedPlaces = listOf(
-    RecommendedPlaceData("Hill Climbing", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash, "San Francisco", 7, false),
-    RecommendedPlaceData("Mountain Trek", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash, "San Francisco", 12, true),
-    RecommendedPlaceData("Forest Trail", R.drawable.iftekhar_nibir_xkcfg_wjx8m_unsplash, "San Francisco", 5, false)
+    RecommendedPlaceData("Nongriat Village", R.drawable.bridge, "Shillong", 7, false),
+    RecommendedPlaceData("Mountain Trek", R.drawable.boats, "Cherapunji", 12, true),
+    RecommendedPlaceData("Elephant Falls", R.drawable.nohakili, "Shillong", 5, false)
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,45 +71,76 @@ fun FirstPageScreen(mainNav : NavController = rememberNavController()) {
             topBar = {
                 TopAppBar(
                     title = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                             Icon(
-                                imageVector = Icons.Default.LocationOn,
+                                painter = painterResource(R.drawable.location_pin_alt_1_svgrepo_com),
                                 contentDescription = "Location",
-                                modifier = Modifier.size(24.dp)
+                                tint = Color.DarkGray,
+                                modifier = Modifier.size(30.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Column {
+                            Column(
+                                horizontalAlignment = Alignment.Start,
+                                verticalArrangement = Arrangement.Center
+                            ) {
                                 Text(
-                                    "Midtown, New York",
+                                    "Shillong, Meghalaya",
                                     fontFamily = poppinsFontFamily1,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 16.sp
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    color = Color(0xFF262626)
                                 )
                                 Text(
                                     "Safety Level: Low Risk",
                                     fontFamily = poppinsFontFamily1,
                                     fontSize = 12.sp,
-                                    color = Color(0xFF4CAF50)
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF2BA02D)
                                 )
                             }
                         }
                     },
                     actions = {
                         IconButton(onClick = {mainNav.navigate("DrawerContent")}) {
-                            Icon(Icons.Filled.Notifications, contentDescription = "Notifications", modifier = Modifier.size(28.dp))
+                            Icon(painterResource(R.drawable.threeline), contentDescription = "Notifications", modifier = Modifier
+                                .clip(CircleShape)
+                                .background(Color.White)
+                                .padding(8.dp)
+                                .size(28.dp))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
                 )
             },
-            containerColor = Color(0xFFE0F7FA) // Make scaffold background transparent
+            floatingActionButton = {
+                IconButton(
+                    onClick = {},
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = Color(0XFF262626)
+                    ),
+                ) {
+                    Icon(painterResource(R.drawable.sos_svgrepo_com),
+                        contentDescription = null,
+                        tint = Color.White)
+                }
+            },
+            containerColor = Color(0xFFE0F7FA), // Make scaffold background transparent
+            modifier = Modifier.padding(end = 5.dp)
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
                 // Light blue gradient-like background for the top portion
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFE0F7FA).copy(alpha = 0.45f)) // Light cyan, adjust color
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFFa8d7f4),
+                                    Color.White,
+                                    Color.White
+                                )
+                            )
+                        )
                 )
 
                 Column(
@@ -128,15 +154,19 @@ fun FirstPageScreen(mainNav : NavController = rememberNavController()) {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
 
                         OutlinedTextField(
                             value = searchQuery,
                             onValueChange = { searchQuery = it },
                             placeholder = { Text("Search your place", fontFamily = poppinsFontFamily1) },
                             leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(30.dp),
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+                            shape = RoundedCornerShape(20.dp),
+                            textStyle = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = poppinsFontFamily1,
+                            ),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Color.Transparent,
                                 unfocusedBorderColor = Color.Transparent,
@@ -145,7 +175,6 @@ fun FirstPageScreen(mainNav : NavController = rememberNavController()) {
                             )
                         )
                     }
-
                     Spacer(modifier = Modifier.height(24.dp))
                     RecommendedSection()
                 }
@@ -155,55 +184,21 @@ fun FirstPageScreen(mainNav : NavController = rememberNavController()) {
 
 
 @Composable
-fun BrowseByActivitySection() {
-    Column(modifier = Modifier.padding(start = 16.dp)) {
-        Text(
-            "Browse by activity",
-            style = MaterialTheme.typography.titleMedium.copy(fontFamily = poppinsFontFamily1, fontWeight = FontWeight.Bold)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(end = 16.dp)
-        ) {
-            items(sampleActivities) { activity ->
-                ActivityItem(activity)
-            }
-        }
-    }
-}
-
-@Composable
-fun ActivityItem(activity: ActivityItemData) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(
-            painter = painterResource(id = activity.imageResId),
-            contentDescription = activity.name,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(70.dp)
-                .clip(CircleShape)
-        )
-        Spacer(modifier = Modifier.height(6.dp))
-        Text(activity.name, fontFamily = poppinsFontFamily1, fontSize = 13.sp)
-    }
-}
-
-@Composable
 fun RecommendedSection() {
     Column(modifier = Modifier) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(5.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 "Recommended",
-                style = MaterialTheme.typography.titleMedium.copy(fontFamily = poppinsFontFamily1)
+                style = MaterialTheme.typography.titleMedium.copy(fontFamily = poppinsFontFamily1, fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                    color = Color(0xFF262626))
             )
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { /*TODO*/ }) {
-                Text("See all", fontFamily = poppinsFontFamily1, color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
-                Icon(Icons.Filled.Refresh, contentDescription = "See all", tint = MaterialTheme.colorScheme.primary)
+                Text("See all", fontFamily = poppinsFontFamily1, fontSize = 16.sp)
+                Icon(painterResource(R.drawable.right), contentDescription = "See all", tint = MaterialTheme.colorScheme.primary)
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -211,10 +206,7 @@ fun RecommendedSection() {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(sampleRecommendedPlaces) { place ->
-                RecommendedPlaceCard(place = place, onFavoriteClick = {
-                    // In a real app, you'd update the data source
-                    place.isFavorite = !place.isFavorite
-                })
+                RecommendedPlaceCard(place = place)
             }
         }
     }
@@ -222,58 +214,46 @@ fun RecommendedSection() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecommendedPlaceCard(place: RecommendedPlaceData, onFavoriteClick: () -> Unit) {
-    var currentIsFavorite by remember { mutableStateOf(place.isFavorite) }
+fun RecommendedPlaceCard(place: RecommendedPlaceData) {
 
     Card(
-        modifier = Modifier.width(220.dp),
+        modifier = Modifier.width(200.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color(0xE5F7F8F9)
         )
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(140.dp)
-                .background(Color.White)
             ) {
                 Image(
                     painter = painterResource(id = place.imageResId),
                     contentDescription = place.name,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(17.dp))
                 )
-                IconButton(
-                    onClick = {
-                        currentIsFavorite = !currentIsFavorite
-                        onFavoriteClick()
-                    },
-                    modifier = Modifier.align(Alignment.TopEnd).padding(4.dp)
-                ) {
-                    Icon(
-                        if (currentIsFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = if (currentIsFavorite) Color.Red else Color.White
-                    )
-                }
             }
             Column(modifier = Modifier
                 .padding(12.dp)) {
                 Text(
                     place.name,
                     fontFamily = poppinsFontFamily1,
-                    fontSize = 17.sp,
+                    fontSize = 16.sp,
                     maxLines = 1,
+                    color = Color(0xFF262626),
+                    fontWeight = FontWeight.W700,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.LocationOn, contentDescription = "Location", modifier = Modifier.size(16.dp), tint = Color.Gray)
+                    Icon(painterResource(R.drawable.location_pin_alt_1_svgrepo_com), contentDescription = "Location", modifier = Modifier.size(16.dp), tint = Color.DarkGray)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(place.location, fontFamily = poppinsFontFamily1, fontSize = 13.sp, color = Color.Gray)
+                    Text(place.location, fontFamily = poppinsFontFamily1, fontSize = 13.sp, color = Color.DarkGray)
                 }
-                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
