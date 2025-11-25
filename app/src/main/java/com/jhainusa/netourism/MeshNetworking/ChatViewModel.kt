@@ -1,6 +1,8 @@
 package com.jhainusa.netourism.MeshNetworking
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,20 +28,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jhainusa.netourism.SupaBase.ReportViewModel
+import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
+import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
 
-class ChatViewModel(private val context: Context) : ViewModel() {
+class ChatViewModel(private val context: Context,private val prefsManager: UserPreferencesManager) : ViewModel() {
 
     var messages = mutableStateListOf<ChatMessage>()
         private set
 
     lateinit var nearby: NearbyManager
 
+
+
     fun initNearby() {
         nearby = NearbyManager(
             context,
-            onReceive = { receiveMessage(it) },
+            onReceive = {
+                receiveMessage(it)
+
+                        },
             onConnected = { addSystem("Connected!") }
         )
+    }
+    fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            prefsManager.appContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+                    as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+        return capabilities != null &&
+                (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
     fun addSystem(text: String) {
@@ -53,6 +77,7 @@ class ChatViewModel(private val context: Context) : ViewModel() {
 
     fun receiveMessage(text: String) {
         messages.add(ChatMessage(text, false))
+
     }
 }
 data class ChatMessage(

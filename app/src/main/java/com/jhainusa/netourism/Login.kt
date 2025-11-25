@@ -51,8 +51,18 @@ fun SecureLoginScreen(navController: NavController, context: Context = LocalCont
     val viewModel: ReportViewModel = viewModel(
         factory = ReportViewModelFactory(prefsManager)
     )
-    val user by viewModel.user.collectAsState()
 
+//    LaunchedEffect(Unit) {
+//        viewModel.uploadAlertToServer(
+//            touristId = "TID-DEL-MI95875E-D0952A80",
+//            alertType = "Ambulance bhejo saalo",
+//            severity = "high",
+//            description = "Mera Ghee Khatam ho gya hai",
+//            locationName = "Sector 28 Market",
+//            latitude = 21.5562,
+//            longitude = 78.1010
+//        )
+//    }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

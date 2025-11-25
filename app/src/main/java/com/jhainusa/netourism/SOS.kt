@@ -1,5 +1,11 @@
 package com.jhainusa.netourism
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.speech.RecognizerIntent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -36,6 +42,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -55,10 +64,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.MeshNetworking.ChatMessage
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
+import com.jhainusa.netourism.SupaBase.Alert
+import com.jhainusa.netourism.SupaBase.ReportViewModel
+import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
+import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
+import com.jhainusa.netourism.UserPreferences.getUserPrefs
 import com.jhainusa.netourism.ui.theme.NETourismTheme
 
 val poppinsSOS = FontFamily(
@@ -67,9 +82,39 @@ val poppinsSOS = FontFamily(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SOSScreen(navController: NavController,viewModel: ChatViewModel) {
+fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
+              context : Context = LocalContext.current
+) {
 
-    var emergencyMessage by remember { mutableStateOf("") }
+    val user = context.getUserPrefs().getUser()
+
+    var userInput by remember { mutableStateOf(TextFieldValue("")) }
+    val prefsManager = remember { UserPreferencesManager(context) }
+
+    val reportViewModel: ReportViewModel = viewModel(
+        factory = ReportViewModelFactory(prefsManager)
+    )
+
+    val speechRecognizerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val spokenText =
+                result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0)
+            spokenText?.let {
+                userInput = TextFieldValue(it)
+            }
+        }
+    }
+    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE, "hi-IN") // Correct format for Hindi
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "hi-IN")
+        putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true)
+        putExtra(RecognizerIntent.EXTRA_PROMPT, "कुछ भी पूछें...")
+        putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true) // Helps improve accuracy
+    }
+
 
     Scaffold(
         topBar = {
@@ -106,33 +151,36 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel) {
             )
 
             Spacer(modifier = Modifier.height(32.dp))
-
-            //SOSButton()
+            TextButton(onClick = {
+                speechRecognizerLauncher.launch(intent)
+            }) {
+                Text("🎤 Speak", color = Color.Red, fontSize = 16.sp, fontFamily = poppinsSOS)
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Text(
-//                    text = "Your emergency message:",
-//                    fontFamily = poppinsSOS,
-//                    fontSize = 16.sp,
-//                    fontWeight = FontWeight.Medium
-//                )
-//                TextButton(onClick = { /* TODO: Handle Edit */ }) {
-//                    Icon(
-//                        Icons.Default.Edit,
-//                        contentDescription = "Edit",
-//                        tint = Color.Red,
-//                        modifier = Modifier.size(16.dp)
-//                    )
-//                    Spacer(modifier = Modifier.width(4.dp))
-//                    Text("Edit", color = Color.Red, fontFamily = poppinsSOS)
-//                }
-//            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Your emergency message:",
+                    fontFamily = poppinsSOS,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                TextButton(onClick = { /* TODO: Handle Edit */ }) {
+                    Icon(
+                        Icons.Default.Edit,
+                        contentDescription = "Edit",
+                        tint = Color.Red,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Edit", color = Color.Red, fontFamily = poppinsSOS)
+                }
+            }
             LazyColumn(
                 modifier = Modifier.weight(1f),
                 reverseLayout = true
@@ -145,8 +193,8 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel) {
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = emergencyMessage,
-                onValueChange = { emergencyMessage = it },
+                value = userInput,
+                onValueChange = { userInput = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Enter your issue", color = Color.Black) },
                 textStyle = TextStyle(
@@ -160,11 +208,27 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel) {
                 ),
                 singleLine = true
             )
+            val alert = Alert(
+                tourist_id = user?.touristId.toString(),
+                alert_type = "Ambulance",
+                severity = "medium",
+                description = userInput.text,
+                location_name = "North Eastern",
+                latitude = 21.5562,
+                longitude = 78.1010
+            )
 
             TextButton(onClick = {
-                if (emergencyMessage.isNotBlank()) {
-                    viewModel.sendMessage(emergencyMessage)
-                    emergencyMessage = ""
+                if (userInput.text.isNotBlank()) {
+                    if(viewModel.isNetworkAvailable()){
+                        reportViewModel.uploadAlertToServer(
+                            alert = alert
+                        )
+                    }
+                    else {
+                        viewModel.sendMessage("$userInput \n $alert" )
+                    }
+                    userInput = TextFieldValue("")
                 }
             }) {
                 Text("SEND", color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = poppinsSOS)

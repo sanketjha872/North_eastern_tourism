@@ -6,7 +6,7 @@ import com.jhainusa.netourism.SupaBase.User
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class UserPreferencesManager(context: Context) {
+class UserPreferencesManager(val context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME,
@@ -17,6 +17,8 @@ class UserPreferencesManager(context: Context) {
         ignoreUnknownKeys = true
         encodeDefaults = true
     }
+    val appContext: Context
+        get() = context.applicationContext
 
     companion object {
         private const val PREFS_NAME = "user_preferences"

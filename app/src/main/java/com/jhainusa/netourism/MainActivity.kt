@@ -1,8 +1,12 @@
 package com.jhainusa.netourism
 
 import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -26,12 +32,16 @@ import com.jhainusa.netourism.MeshNetworking.MeshCore
 
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
 import com.jhainusa.netourism.ui.theme.NETourismTheme
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private lateinit var prefsManager: UserPreferencesManager
+
     private val permissions = mutableListOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.RECORD_AUDIO
+
     ).apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             add(Manifest.permission.BLUETOOTH_CONNECT)
@@ -58,7 +68,7 @@ class MainActivity : ComponentActivity() {
         launcher.launch(permissions.toTypedArray())
 
         // Initialize mesh networking (only once)
-        MeshCore.init(applicationContext)
+        MeshCore.init(applicationContext,prefsManager)
 
         setContent {
             val navController = rememberAnimatedNavController()
@@ -89,9 +99,6 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             SecureLoginScreen(navController)
                         }
-                        composable("signup") {
-                            SignUpScreen(navController)
-                        }
                         composable("userinfo") {
                             SecureLoginScreen(navController)
                         }
@@ -111,3 +118,4 @@ class MainActivity : ComponentActivity() {
 
     }
 }
+

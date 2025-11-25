@@ -1,6 +1,9 @@
 package com.jhainusa.netourism.SupaBase
 
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModelProvider
@@ -37,11 +40,31 @@ object Supabase {
 suspend fun fetchAllUsersbyBlockchainID(blockchainId : String): User? {
     return client
         .from("users")
-        .select{
+        .select(){
             filter { eq("blockchain_id", blockchainId) }
         }
         .decodeSingleOrNull<User>()
 }
+suspend fun fetchAllUsers(): List<User> {
+    return client
+        .from("users")
+        .select()
+        .decodeList<User>()
+}
+
+suspend fun uploadAlert(alert: Alert): Boolean {
+    return try {
+        Supabase.client
+            .from("alerts")
+            .insert(alert)
+
+        true
+    } catch (e: Exception) {
+        Log.e("Supabase", "Error uploading alert", e)
+        false
+    }
+}
+
 class ReportViewModel( private val prefsManager: UserPreferencesManager
 ) : ViewModel() {
 
@@ -50,6 +73,21 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
 
     private val _saved = MutableStateFlow<User?>(null)
     val saver : StateFlow<User?> = _saved
+
+
+    fun fetchUsers() {
+        viewModelScope.launch {
+
+
+            try {
+                val list = fetchAllUsers()
+                Log.d("users", list.toString())
+
+            } catch (e: Exception) {
+                print(e)
+            }
+        }
+    }
 
     fun loadReportsFromNetwork(id: String) {
         viewModelScope.launch {
@@ -76,6 +114,44 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
         if (savedUser != null) {
             _saved.value = savedUser
             Log.d("ReportViewModel", "User loaded from preferences: ${savedUser.name}")
+        }
+    }
+
+    fun uploadAlertToServer(
+        alert: Alert
+    ) {
+        viewModelScope.launch {
+            val savedUser = prefsManager.getUser()
+            if (savedUser == null) {
+                Log.e("Alert", "Cannot send alert — No user logged in")
+                return@launch
+            }
+
+            // 2. Create the Alert object
+//            val alert = Alert(
+//                tourist_id = touristId,
+//                alert_type = alertType,
+//                severity = "medium",
+//                description = description,
+//                location_name = "North Eastern",
+//                latitude = latitude,
+//                longitude = longitude
+//            )
+
+
+            // 4. Try uploading
+            try {
+                val result = uploadAlert(alert)
+
+                if (result) {
+                    Log.d("Alert", "Alert sent successfully to Supabase")
+                } else {
+                    Log.e("Alert", "Failed to send alert")
+                }
+
+            } catch (e: Exception) {
+                Log.e("Alert", "Exception while sending alert", e)
+            }
         }
     }
 
