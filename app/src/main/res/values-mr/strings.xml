@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">एनई पर्यटन</string>
+    <string name="location">शिलाँग, मेघालय</string>
+    <string name="safety_level">सुरक्षितता पातळी: कमी धोका</string>
+    <string name="notifications">सूचना</string>
+    <string name="add">जोडा</string>
+    <string name="search_your_place">तुमचे ठिकाण शोधा</string>
+    <string name="search_icon">शोध आयकॉन</string>
+    <string name="quick_actions">त्वरित क्रिया</string>
+    <string name="emergency">आपत्कालीन</string>
+    <string name="safety_tips">सुरक्षितता टिप्स</string>
+    <string name="safe_zones">सुरक्षित झोन</string>
+    <string name="report">अहवाल</string>
+    <string name="recommended">शिफारस केलेले</string>
+    <string name="see_all">सर्व पहा</string>
+    <string name="location_content_description">स्थान पिन</string>
+    <string name="nongriat_village">नोंगियात गाव</string>
+    <string name="shillong">शिलाँग</string>
+    <string name="mountain_trek">माउंटन ट्रेक</string>
+    <string name="cherapunji">चेरापुंजी</string>
+    <string name="elephant_falls">एलिफंट फॉल्स</string>
+    <string name="emergency_sos">आपत्कालीन एसओएस</string>
+    <string name="close">बंद करा</string>
+    <string name="press_and_hold_to_send_alert">सूचना पाठवण्यासाठी दाबा आणि धरून ठेवा</string>
+    <string name="speak">🎤 बोला</string>
+    <string name="your_emergency_message">तुमचा आपत्कालीन संदेश:</string>
+    <string name="edit">संपादित करा</string>
+    <string name="enter_your_issue">तुमची समस्या प्रविष्ट करा</string>
+    <string name="send">पाठवा</string>
+    <string name="cancel">रद्द करा</string>
+    <string name="sos">एसओएस</string>
+    <string name="ask_anything">काहीही विचारा...</string>
+    <string name="toggle_language">भाषा बदला</string>
+
+    <string name="title_news">बातम्या</string>
+    <string name="title_home">होम</string>
+    <string name="title_map">नकाशा</string>
+    <string name="title_panic">घाबरणे</string>
+    <string name="title_profile">प्रोफाइल</string>
+    <string name="select_language">भाषा निवडा</string>
+    <string name="back">मागे</string>
+</resources>

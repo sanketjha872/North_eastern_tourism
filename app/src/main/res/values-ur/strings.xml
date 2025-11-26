@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">این ای ٹورزم</string>
+    <string name="location">شیلانگ، میگھالیہ</string>
+    <string name="safety_level">حفاظتی سطح: کم خطرہ</string>
+    <string name="notifications">اطلاعات</string>
+    <string name="add">شامل کریں</string>
+    <string name="search_your_place">اپنی جگہ تلاش کریں</string>
+    <string name="search_icon">تلاش کا آئیکن</string>
+    <string name="quick_actions">فوری اقدامات</string>
+    <string name="emergency">ایمرجنسی</string>
+    <string name="safety_tips">حفاظتی نکات</string>
+    <string name="safe_zones">محفوظ زون</string>
+    <string name="report">رپورٹ</string>
+    <string name="recommended">تجویز کردہ</string>
+    <string name="see_all">سبھی دیکھیں</string>
+    <string name="location_content_description">مقام کا پن</string>
+    <string name="nongriat_village">نونگریات گاؤں</string>
+    <string name="shillong">شیلانگ</string>
+    <string name="mountain_trek">ماؤنٹین ٹریک</string>
+    <string name="cherapunji">چیراپنجی</string>
+    <string name="elephant_falls">ایلیفینٹ فالس</string>
+    <string name="emergency_sos">ایمرجنسی ایس او ایس</string>
+    <string name="close">بند کریں</string>
+    <string name="press_and_hold_to_send_alert">الرٹ بھیجنے کے لیے دبائیں اور تھامیں</string>
+    <string name="speak">🎤 بولیں</string>
+    <string name="your_emergency_message">آپ کا ہنگامی پیغام:</string>
+    <string name="edit">ترمیم کریں</string>
+    <string name="enter_your_issue">اپنا مسئلہ درج کریں</string>
+    <string name="send">بھیجیں</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="sos">ایس او ایس</string>
+    <string name="ask_anything">کچھ بھی پوچھیں...</string>
+    <string name="toggle_language">زبان تبدیل کریں</string>
+
+    <string name="title_news">خبریں</string>
+    <string name="title_home">گھر</string>
+    <string name="title_map">نقشہ</string>
+    <string name="title_panic">گھبراہٹ</string>
+    <string name="title_profile">پروفائل</string>
+    <string name="select_language">زبان منتخب کریں</string>
+    <string name="back">پیچھے</string>
+</resources>

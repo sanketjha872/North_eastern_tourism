@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">એનઇ ટૂરિઝમ</string>
+    <string name="location">શિલોંગ, મેઘાલય</string>
+    <string name="safety_level">સુરક્ષા સ્તર: ઓછું જોખમ</string>
+    <string name="notifications">સૂચનાઓ</string>
+    <string name="add">ઉમેરો</string>
+    <string name="search_your_place">તમારું સ્થાન શોધો</string>
+    <string name="search_icon">શોધ ચિહ્ન</string>
+    <string name="quick_actions">ઝડપી ક્રિયાઓ</string>
+    <string name="emergency">ઇમરજન્સી</string>
+    <string name="safety_tips">સુરક્ષા ટિપ્સ</string>
+    <string name="safe_zones">સુરક્ષિત ઝોન</string>
+    <string name="report">રિપોર્ટ</string>
+    <string name="recommended">ભલામણ કરેલ</string>
+    <string name="see_all">બધા જુઓ</string>
+    <string name="location_content_description">સ્થાન પિન</string>
+    <string name="nongriat_village">નોંગરીયાટ ગામ</string>
+    <string name="shillong">શિલોંગ</string>
+    <string name="mountain_trek">માઉન્ટેન ટ્રેક</string>
+    <string name="cherapunji">ચેરાપુંજી</string>
+    <string name="elephant_falls">એલિફન્ટ ફોલ્સ</string>
+    <string name="emergency_sos">ઇમરજન્સી એસઓએસ</string>
+    <string name="close">બંધ કરો</string>
+    <string name="press_and_hold_to_send_alert">ચેતવણી મોકલવા માટે દબાવો અને પકડી રાખો</string>
+    <string name="speak">🎤 બોલો</string>
+    <string name="your_emergency_message">તમારો ઇમરજન્સી સંદેશ:</string>
+    <string name="edit">સંપાદિત કરો</string>
+    <string name="enter_your_issue">તમારી સમસ્યા દાખલ કરો</string>
+    <string name="send">મોકલો</string>
+    <string name="cancel">રદ કરો</string>
+    <string name="sos">એસઓએસ</string>
+    <string name="ask_anything">કંઈપણ પૂછો...</string>
+    <string name="toggle_language">ભાષા બદલો</string>
+
+    <string name="title_news">સમાચાર</string>
+    <string name="title_home">હોમ</string>
+    <string name="title_map">નકશો</string>
+    <string name="title_panic">ગભરાટ</string>
+    <string name="title_profile">પ્રોફાઇલ</string>
+    <string name="select_language">ભાષા પસંદ કરો</string>
+    <string name="back">પાછા</string>
+</resources>

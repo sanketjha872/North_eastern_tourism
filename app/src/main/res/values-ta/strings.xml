@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">என்இ டூரிசம்</string>
+    <string name="location">ஷில்லாங், மேகாலயா</string>
+    <string name="safety_level">பாதுகாப்பு நிலை: குறைந்த ஆபத்து</string>
+    <string name="notifications">அறிவிப்புகள்</string>
+    <string name="add">சேர்க்கவும்</string>
+    <string name="search_your_place">உங்கள் இடத்தைத் தேடுங்கள்</string>
+    <string name="search_icon">தேடல் ஐகான்</string>
+    <string name="quick_actions">விரைவான செயல்கள்</string>
+    <string name="emergency">அவசரம்</string>
+    <string name="safety_tips">பாதுகாப்பு చిట్కాలు</string>
+    <string name="safe_zones">பாதுகாப்பான மண்டலங்கள்</string>
+    <string name="report">அறிக்கை</string>
+    <string name="recommended">பரிந்துரைக்கப்படுகிறது</string>
+    <string name="see_all">அனைத்தையும் பார்க்க</string>
+    <string name="location_content_description">இருப்பிட పిన్</string>
+    <string name="nongriat_village">நோங்ரியாட் கிராமம்</string>
+    <string name="shillong">ஷில்லாங்</string>
+    <string name="mountain_trek">மலை Трек</string>
+    <string name="cherapunji">చిరపుంజి</string>
+    <string name="elephant_falls">யானை நீர்வீழ்ச்சி</string>
+    <string name="emergency_sos">അടിയന്തര എസ്ഒഎസ്</string>
+    <string name="close">மூடவும்</string>
+    <string name="press_and_hold_to_send_alert">எச்சரிக்கை அனுப்ப அழுத்திப் பிடிக்கவும்</string>
+    <string name="speak">🎤 பேசுங்கள்</string>
+    <string name="your_emergency_message">உங்கள் அவசர செய்தி:</string>
+    <string name="edit">திருத்து</string>
+    <string name="enter_your_issue">உங்கள் சிக்கலை உள்ளிடவும்</string>
+    <string name="send">அனுப்பவும்</string>
+    <string name="cancel">ரத்துசெய்</string>
+    <string name="sos">SOS</string>
+    <string name="ask_anything">எதையும் கேளுங்கள்...</string>
+    <string name="toggle_language">மொழியை மாற்றவும்</string>
+
+    <string name="title_news">செய்திகள்</string>
+    <string name="title_home">முகப்பு</string>
+    <string name="title_map">வரைபடம்</string>
+    <string name="title_panic">பீதி</string>
+    <string name="title_profile">சுயவிவரம்</string>
+    <string name="select_language">மொழியைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="back">பின்</string>
+</resources>

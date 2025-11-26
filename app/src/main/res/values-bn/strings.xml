@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">এনই পর্যটন</string>
+    <string name="location">শিলং, মেঘালয়</string>
+    <string name="safety_level">নিরাপত্তা স্তর: কম ঝুঁকি</string>
+    <string name="notifications">বিজ্ঞপ্তি</string>
+    <string name="add">যোগ করুন</string>
+    <string name="search_your_place">আপনার জায়গা খুঁজুন</string>
+    <string name="search_icon">অনুসন্ধান আইকন</string>
+    <string name="quick_actions">দ্রুত পদক্ষেপ</string>
+    <string name="emergency">জরুরী</string>
+    <string name="safety_tips">নিরাপত্তা টিপস</string>
+    <string name="safe_zones">নিরাপদ অঞ্চল</string>
+    <string name="report">রিপোর্ট</string>
+    <string name="recommended">প্রস্তাবিত</string>
+    <string name="see_all">সব দেখুন</string>
+    <string name="location_content_description">অবস্থান পিন</string>
+    <string name="nongriat_village">নংরিয়াত গ্রাম</string>
+    <string name="shillong">শিলং</string>
+    <string name="mountain_trek">মাউন্টেন ট্রেক</string>
+    <string name="cherapunji">চেরাপুঞ্জি</string>
+    <string name="elephant_falls">এলিফ্যান্ট ফলস</string>
+    <string name="emergency_sos">জরুরী এসওএস</string>
+    <string name="close">বন্ধ করুন</string>
+    <string name="press_and_hold_to_send_alert">সতর্কতা পাঠাতে টিপুন এবং ধরে থাকুন</string>
+    <string name="speak">🎤 বলুন</string>
+    <string name="your_emergency_message">আপনার জরুরি বার্তা:</string>
+    <string name="edit">সম্পাদনা করুন</string>
+    <string name="enter_your_issue">আপনার সমস্যা লিখুন</string>
+    <string name="send">পাঠান</string>
+    <string name="cancel">বাতিল করুন</string>
+    <string name="sos">এসওএস</string>
+    <string name="ask_anything">কিছু জিজ্ঞাসা করুন...</string>
+    <string name="toggle_language">ভাষা পরিবর্তন করুন</string>
+
+    <string name="title_news">খবর</string>
+    <string name="title_home">হোম</string>
+    <string name="title_map">মানচিত্র</string>
+    <string name="title_panic">আতঙ্ক</string>
+    <string name="title_profile">প্রোফাইল</string>
+    <string name="select_language">ভাষা নির্বাচন করুন</string>
+    <string name="back">পেছনে</string>
+</resources>

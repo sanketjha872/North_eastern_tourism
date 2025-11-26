@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">ଏନଇ ପର୍ଯ୍ୟଟନ</string>
+    <string name="location">ଶିଲଂ, ମେଘାଳୟ</string>
+    <string name="safety_level">ସୁରକ୍ଷା ସ୍ତର: କମ୍ ବିପଦ</string>
+    <string name="notifications">ବିଜ୍ଞପ୍ତି</string>
+    <string name="add">ଯୋଡ଼ନ୍ତୁ</string>
+    <string name="search_your_place">ଆପଣଙ୍କ ସ୍ଥାନ ଖୋଜନ୍ତୁ</string>
+    <string name="search_icon">ଖୋଜିବା ଆଇକନ୍</string>
+    <string name="quick_actions">ଶୀଘ୍ର କାର୍ଯ୍ୟ</string>
+    <string name="emergency">ଜରୁରୀକାଳୀନ</string>
+    <string name="safety_tips">ସୁରକ୍ଷା ଟିପ୍ସ</string>
+    <string name="safe_zones">ସୁରକ୍ଷିତ ଜୋନ୍</string>
+    <string name="report">ରିପୋର୍ଟ</string>
+    <string name="recommended">ସୁପାରିଶ କରାଯାଇଛି</string>
+    <string name="see_all">ସବୁ ଦେଖନ୍ତୁ</string>
+    <string name="location_content_description">ସ୍ଥାନ ପିନ୍</string>
+    <string name="nongriat_village">ନୋଙ୍ଗ୍ରିଆଟ୍ ଗାଁ</string>
+    <string name="shillong">ଶିଲଂ</string>
+    <string name="mountain_trek">ମାଉଣ୍ଟେନ୍ ଟ୍ରେକ୍</string>
+    <string name="cherapunji">ଚେରାପୁଞ୍ଜି</string>
+    <string name="elephant_falls">ଏଲିଫ୍ୟାଣ୍ଟ ଫଲ୍ସ</string>
+    <string name="emergency_sos">ଜରୁରୀକାଳୀନ ଏସଓଏସ</string>
+    <string name="close">ବନ୍ଦ କରନ୍ତୁ</string>
+    <string name="press_and_hold_to_send_alert">ସତର୍କ ସୂଚନା ପଠାଇବାକୁ ଦବାଇ ଧରନ୍ତୁ</string>
+    <string name="speak">🎤 କୁହନ୍ତୁ</string>
+    <string name="your_emergency_message">ଆପଣଙ୍କ ଜରୁରୀକାଳୀନ ସନ୍ଦେଶ:</string>
+    <string name="edit">ସମ୍ପାଦନ କରନ୍ତୁ</string>
+    <string name="enter_your_issue">ଆପଣଙ୍କ ସମସ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="send">ପଠାନ୍ତୁ</string>
+    <string name="cancel">ବାତିଲ୍ କରନ୍ତୁ</string>
+    <string name="sos">ଏସଓଏସ</string>
+    <string name="ask_anything">କିଛି ପଚାରନ୍ତୁ...</string>
+    <string name="toggle_language">ଭାଷା ବଦଳାନ୍ତୁ</string>
+
+    <string name="title_news">ସମ୍ବାଦ</string>
+    <string name="title_home">ହୋମ୍</string>
+    <string name="title_map">ମାନଚିତ୍ର</string>
+    <string name="title_panic">ଆତଙ୍କ</string>
+    <string name="title_profile">ପ୍ରୋଫାଇଲ୍</string>
+    <string name="select_language">ଭାଷା ବାଛନ୍ତୁ</string>
+    <string name="back">ପଛକୁ</string>
+</resources>

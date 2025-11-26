@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">എൻഇ ടൂറിസം</string>
+    <string name="location">ഷില്ലോംഗ്, മേഘാലയ</string>
+    <string name="safety_level">സുരക്ഷാ നില: കുറഞ്ഞ അപകടസാധ്യത</string>
+    <string name="notifications">അറിയിപ്പുകൾ</string>
+    <string name="add">ചേർക്കുക</string>
+    <string name="search_your_place">നിങ്ങളുടെ സ്ഥലം തിരയുക</string>
+    <string name="search_icon">തിരയൽ ഐക്കൺ</string>
+    <string name="quick_actions">ദ്രുത പ്രവർത്തനങ്ങൾ</string>
+    <string name="emergency">അടിയന്തരം</string>
+    <string name="safety_tips">സുരക്ഷാ നുറുങ്ങുകൾ</string>
+    <string name="safe_zones">സുരക്ഷിത മേഖലകൾ</string>
+    <string name="report">റിപ്പോർട്ട്</string>
+    <string name="recommended">ശുപാർശ ചെയ്യുന്നത്</string>
+    <string name="see_all">എല്ലാം കാണുക</string>
+    <string name="location_content_description">ലൊക്കേഷൻ പിൻ</string>
+    <string name="nongriat_village">നോൺഗ്രിയാറ്റ് വില്ലേജ്</string>
+    <string name="shillong">ഷില്ലോംഗ്</string>
+    <string name="mountain_trek">മൗണ്ടൻ ട്രെക്ക്</string>
+    <string name="cherapunji">ചിറാಪುঞ্জি</string>
+    <string name="elephant_falls">എലിഫന്റ് ഫാൾസ്</string>
+    <string name="emergency_sos">അടിയന്തര എസ്ഒഎസ്</string>
+    <string name="close">അടയ്ക്കുക</string>
+    <string name="press_and_hold_to_send_alert">അലേർട്ട് അയയ്ക്കാൻ അമർത്തിപ്പിടിക്കുക</string>
+    <string name="speak">🎤 സംസാരിക്കുക</string>
+    <string name="your_emergency_message">നിങ്ങളുടെ അടിയന്തര സന്ദേശം:</string>
+    <string name="edit">എഡിറ്റുചെയ്യുക</string>
+    <string name="enter_your_issue">നിങ്ങളുടെ പ്രശ്നം നൽകുക</string>
+    <string name="send">അയയ്ക്കുക</string>
+    <string name="cancel">റദ്ദാക്കുക</string>
+    <string name="sos">എസ്ഒഎസ്</string>
+    <string name="ask_anything">എന്തെങ്കിലും ചോദിക്കൂ...</string>
+    <string name="toggle_language">மொழி മാറ്റുക</string>
+
+    <string name="title_news">വാർത്തകൾ</string>
+    <string name="title_home">ഹോം</string>
+    <string name="title_map">മാപ്പ്</string>
+    <string name="title_panic">പരിഭ്രാന്തി</string>
+    <string name="title_profile">പ്രൊഫൈൽ</string>
+    <string name="select_language">ഭാഷ തിരഞ്ഞെടുക്കുക</string>
+    <string name="back">പുറകോട്ട്</string>
+</resources>

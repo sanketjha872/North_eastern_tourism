@@ -16,17 +16,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
+import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.jhainusa.netourism.MeshNetworking.MeshCore
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
 import com.jhainusa.netourism.ui.theme.NETourismTheme
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val prefsManager: UserPreferencesManager by lazy {
@@ -105,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                             NewsScreen(navController)
                         }
                         composable("DrawerContent") {
-                            DrawerContent()
+                            DrawerContent(navController =navController)
                         }
                         composable("AllScreenNav") {
                             MainApp(navController, MeshCore.chatViewModel)
@@ -116,6 +115,9 @@ class MainActivity : AppCompatActivity() {
                         composable("FirstPageScreen") {
                             FirstPageScreen(mainNav = navController)
                         }
+                        composable("LanguageSelectionScreen") {
+                            LanguageSelectionScreen(navController)
+                        }
                     }
                 }
             }
@@ -124,23 +126,10 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// A simple button to toggle the language
+// Button to navigate to the language selection screen
 @Composable
-fun LanguageSwitcher() {
-    val context = LocalContext.current
-    val prefsManager = UserPreferencesManager(context)
-    val scope = rememberCoroutineScope()
-
-    Button(onClick = {
-        scope.launch {
-            val currentLang = prefsManager.getLanguage() ?: "en"
-            val newLang = if (currentLang == "en") "hi" else "en"
-            prefsManager.saveLanguage(newLang)
-
-            // Set the app locale. The system will handle recreating the activity.
-            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newLang))
-        }
-    }) {
-        Text("Toggle Language")
+fun ChangeLanguageButton(navController: NavController) {
+    Button(onClick = { navController.navigate("LanguageSelectionScreen") }) {
+        Text(stringResource(R.string.toggle_language))
     }
 }

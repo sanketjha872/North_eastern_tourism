@@ -30,4 +30,13 @@
     <string name="cancel">रद्द करें</string>
     <string name="sos">एसओएस</string>
     <string name="ask_anything">कुछ भी पूछें...</string>
+    <string name="toggle_language">भाषा बदलें</string>
+
+    <string name="title_news">समाचार</string>
+    <string name="title_home">होम</string>
+    <string name="title_map">नक्शा</string>
+    <string name="title_panic">घबराहट</string>
+    <string name="title_profile">प्रोफ़ाइल</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="back">वापस</string>
 </resources>

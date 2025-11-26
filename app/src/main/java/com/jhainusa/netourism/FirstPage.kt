@@ -184,8 +184,6 @@ fun FirstPageScreen(mainNav: NavController = rememberNavController()) {
                 QuickActionsSection()
                 Spacer(modifier = Modifier.height(24.dp))
                 RecommendedSection()
-                Spacer(modifier = Modifier.weight(1f))
-                LanguageSwitcher()
             }
         }
     }

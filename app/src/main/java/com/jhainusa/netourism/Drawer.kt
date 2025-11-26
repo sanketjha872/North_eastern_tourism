@@ -3,6 +3,7 @@ package com.jhainusa.netourism
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -20,16 +21,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jhainusa.netourism.UserPreferences.getUserPrefs
 
-@Preview
 @Composable
-fun DrawerContent(context : Context = LocalContext.current) {
+fun DrawerContent(context : Context = LocalContext.current,
+                  navController: NavController) {
      val user = context.getUserPrefs().getUser()
     Column(modifier = Modifier.background(Color(0xFFFFFFFE))) {
             Row(
@@ -39,11 +42,15 @@ fun DrawerContent(context : Context = LocalContext.current) {
                 .padding(20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier.padding(end = 16.dp)
-                )
+                IconButton(
+                    onClick = {navController.popBackStack()}
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(painter = painterResource(R.drawable.help_alt_svgrepo_com), contentDescription = "Help")
             }
@@ -73,7 +80,7 @@ fun DrawerContent(context : Context = LocalContext.current) {
                                 fontSize = 24.sp,
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
-                                fontFamily = poppinsFontFamily
+                                fontFamily = poppinsFontFamily1
                             )
                         }
                         Column(modifier = Modifier.padding(start = 16.dp)) {
@@ -81,13 +88,13 @@ fun DrawerContent(context : Context = LocalContext.current) {
                                 "${user?.name}",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp,
-                                fontFamily = poppinsFontFamily
+                                fontFamily = poppinsFontFamily1
                             )
                             Text(
                                 "${user?.email}",
                                 color = Color.Gray,
                                 fontSize = 14.sp,
-                                fontFamily = poppinsFontFamily
+                                fontFamily = poppinsFontFamily1
                             )
                         }
                         Spacer(modifier = Modifier.weight(1f))
@@ -113,7 +120,7 @@ fun DrawerContent(context : Context = LocalContext.current) {
                                 "BlockChain ID - ${user?.blockchainId}",
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(start = 8.dp),
-                                fontFamily = poppinsFontFamily
+                                fontFamily = poppinsFontFamily1
                             )
                         }
                         Image(
@@ -128,7 +135,7 @@ fun DrawerContent(context : Context = LocalContext.current) {
                             "View ID details",
                             color = Color(0xFF55c1f6),
                             fontWeight = FontWeight.SemiBold,
-                            fontFamily = poppinsFontFamily
+                            fontFamily = poppinsFontFamily1
                         )
                     }
                 }
@@ -139,23 +146,24 @@ fun DrawerContent(context : Context = LocalContext.current) {
                 DrawerMenuItem(
                     icon = painterResource(R.drawable.language),
                     title = "Languages",
-                    subtitle = "Change your Language"
+                    subtitle = stringResource(R.string.toggle_language),
+                    onClick = {navController.navigate("LanguageSelectionScreen") }
                 )
                 DrawerMenuItem(
                     icon = painterResource(R.drawable.help_alt_svgrepo_com),
                     title = "Help and support",
                     subtitle = null
-                )
+                ){}
                 DrawerMenuItem(
                     icon = painterResource(R.drawable.info_svgrepo_com),
                     title = "About App",
                     subtitle = null
-                )
+                ){}
                 DrawerMenuItem(
                     icon = painterResource(R.drawable.logout_svgrepo_com),
                     title = "Log Out",
                     subtitle = null
-                )
+                ){}
             }
         }
 
@@ -163,11 +171,16 @@ fun DrawerContent(context : Context = LocalContext.current) {
 }
 
 @Composable
-fun DrawerMenuItem(icon: Painter, title: String, subtitle: String?) {
+fun DrawerMenuItem(icon: Painter, title: String, subtitle: String?,
+                   onClick : () -> Unit) {
     Card(
-        modifier = Modifier.padding(horizontal = 14.dp),
+        modifier = Modifier.padding(horizontal = 14.dp)
+            .clickable(
+                onClick = onClick
+            ),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+
     ) {
         Row(
             modifier = Modifier
@@ -182,13 +195,13 @@ fun DrawerMenuItem(icon: Painter, title: String, subtitle: String?) {
                 tint = Color.Gray
             )
             Column(modifier = Modifier.padding(start = 16.dp).weight(1f)) {
-                Text(title, fontWeight = FontWeight.SemiBold, fontFamily = poppinsFontFamily,)
+                Text(title, fontWeight = FontWeight.SemiBold, fontFamily = poppinsFontFamily1,)
                 if (subtitle != null) {
                     Text(
                         subtitle,
                         color = Color.Gray,
                         fontSize = 12.sp,
-                        fontFamily = poppinsFontFamily
+                        fontFamily = poppinsFontFamily1
                     )
                 }
             }
