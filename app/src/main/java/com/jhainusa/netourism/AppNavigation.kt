@@ -32,6 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.Map.NavigationScreen
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
+import com.jhainusa.netourism.SupaBase.TouristProfileScreen
 
 // Define Poppins font family (assuming poppinsmedium.ttf in res/font)
 val poppinsFontFamilyAppNav = FontFamily(
@@ -106,7 +107,9 @@ fun AppNavigationHost(navController: NavHostController, innerPadding: PaddingVal
         composable(Screen.Home.route) { FirstPageScreen(mainNav) } // Assuming FirstPageScreen is your home screen content
         composable(Screen.Map.route) { NavigationScreen()} //JourneyTimelineScreen(navController) }
         composable(Screen.Panic.route) { SOSScreen(navController,viewModel) }
-        composable(Screen.Profile.route) {ProfileScreen(navController)}
+        composable(Screen.Profile.route) { TouristProfileScreen(onBack = {}, onEdit = {},
+            navController)
+            }
     }
 }
 

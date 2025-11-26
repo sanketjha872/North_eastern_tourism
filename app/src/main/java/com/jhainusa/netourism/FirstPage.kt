@@ -238,7 +238,7 @@ fun QuickAction(painter: Painter, text: String) {
         Text(
             text = text,
             fontFamily = poppinsFontFamily1,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             color = Color.DarkGray
         )
     }

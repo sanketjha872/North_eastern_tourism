@@ -122,7 +122,7 @@ fun NewsScreen(navController: NavController) {
                 )
             }
         },
-        containerColor = Color(0xFFF5F5F5)
+        containerColor = Color(0xFFFBFBF9)
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             // Filter Chips
