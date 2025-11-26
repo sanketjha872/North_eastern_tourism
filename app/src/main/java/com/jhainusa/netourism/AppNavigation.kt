@@ -4,7 +4,13 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,6 +30,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.ML.EmergencyClassifierScreen
+import com.jhainusa.netourism.Map.NavigationScreen
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
 import com.jhainusa.netourism.UserPreferences.OsmMapScreen
 
@@ -102,7 +109,7 @@ fun AppNavigationHost(navController: NavHostController, innerPadding: PaddingVal
     ) {
         composable(Screen.News.route) { NewsScreen(navController)} // Assuming OnboardingScreen is the new Login/News screen
         composable(Screen.Home.route) { FirstPageScreen(mainNav) } // Assuming FirstPageScreen is your home screen content
-        composable(Screen.Map.route) { OsmMapScreen()} //JourneyTimelineScreen(navController) }
+        composable(Screen.Map.route) { NavigationScreen()} //JourneyTimelineScreen(navController) }
         composable(Screen.Panic.route) { SOSScreen(navController,viewModel) }
         composable(Screen.Profile.route) {ProfileScreen(navController)}
     }

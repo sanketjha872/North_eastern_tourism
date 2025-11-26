@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">NE Tourism</string>
+    <string name="location">Shillong, Meghalaya</string>
+    <string name="safety_level">Safety Level: Low Risk</string>
+    <string name="notifications">Notifications</string>
+    <string name="add">Add</string>
+    <string name="search_your_place">Search your place</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="emergency">Emergency</string>
+    <string name="safety_tips">Safety Tips</string>
+    <string name="safe_zones">Safe Zones</string>
+    <string name="report">Report</string>
+    <string name="recommended">Recommended</string>
+    <string name="see_all">See all</string>
+    <string name="location_content_description">Location Pin</string>
+    <string name="nongriat_village">Nongriat Village</string>
+    <string name="shillong">Shillong</string>
+    <string name="mountain_trek">Mountain Trek</string>
+    <string name="cherapunji">Cherapunji</string>
+    <string name="elephant_falls">Elephant Falls</string>
+    <string name="emergency_sos">Emergency SOS</string>
+    <string name="close">Close</string>
+    <string name="press_and_hold_to_send_alert">Press and Hold to Send Alert</string>
+    <string name="speak">🎤 Speak</string>
+    <string name="your_emergency_message">Your emergency message:</string>
+    <string name="edit">Edit</string>
+    <string name="enter_your_issue">Enter your issue</string>
+    <string name="send">SEND</string>
+    <string name="cancel">Cancel</string>
+    <string name="sos">SOS</string>
+    <string name="ask_anything">Ask anything...</string>
 </resources>

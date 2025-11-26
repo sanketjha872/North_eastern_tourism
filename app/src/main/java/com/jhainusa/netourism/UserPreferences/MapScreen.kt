@@ -41,5 +41,6 @@ fun OsmMapScreen() {
             map
         }
     )
+
 }
 

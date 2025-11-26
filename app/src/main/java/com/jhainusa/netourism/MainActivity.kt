@@ -1,41 +1,37 @@
 package com.jhainusa.netourism
 
 import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.jhainusa.netourism.MeshNetworking.ChatScreen
-import com.jhainusa.netourism.MeshNetworking.ChatViewModel
 import com.jhainusa.netourism.MeshNetworking.MeshCore
-
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
 import com.jhainusa.netourism.ui.theme.NETourismTheme
-import java.util.Locale
+import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
-    private lateinit var prefsManager: UserPreferencesManager
+class MainActivity : AppCompatActivity() {
+    private val prefsManager: UserPreferencesManager by lazy {
+        UserPreferencesManager(this)
+    }
 
     private val permissions = mutableListOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -56,9 +52,12 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Set language before UI is created
+        prefsManager.getLanguage()?.let {
+            val appLocale = LocaleListCompat.forLanguageTags(it)
+            AppCompatDelegate.setApplicationLocales(appLocale)
+        }
         super.onCreate(savedInstanceState)
-        prefsManager = UserPreferencesManager(this)
-
 
         val launcher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -68,7 +67,7 @@ class MainActivity : ComponentActivity() {
         launcher.launch(permissions.toTypedArray())
 
         // Initialize mesh networking (only once)
-        MeshCore.init(applicationContext,prefsManager)
+        MeshCore.init(applicationContext, prefsManager)
 
         setContent {
             val navController = rememberAnimatedNavController()
@@ -79,9 +78,9 @@ class MainActivity : ComponentActivity() {
                     AnimatedNavHost(
 
                         navController = navController,
-                        startDestination = 
-                            if (prefsManager.hasUser()) "AllScreenNav"
-                            else "OnboardingScreen",
+                        startDestination =
+                        if (prefsManager.hasUser()) "AllScreenNav"
+                        else "OnboardingScreen",
 
                         enterTransition = {
                             slideIntoContainer(
@@ -114,6 +113,9 @@ class MainActivity : ComponentActivity() {
                         composable("OnboardingScreen") {
                             OnboardingScreen(navController)
                         }
+                        composable("FirstPageScreen") {
+                            FirstPageScreen(mainNav = navController)
+                        }
                     }
                 }
             }
@@ -122,3 +124,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// A simple button to toggle the language
+@Composable
+fun LanguageSwitcher() {
+    val context = LocalContext.current
+    val prefsManager = UserPreferencesManager(context)
+    val scope = rememberCoroutineScope()
+
+    Button(onClick = {
+        scope.launch {
+            val currentLang = prefsManager.getLanguage() ?: "en"
+            val newLang = if (currentLang == "en") "hi" else "en"
+            prefsManager.saveLanguage(newLang)
+
+            // Set the app locale. The system will handle recreating the activity.
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newLang))
+        }
+    }) {
+        Text("Toggle Language")
+    }
+}

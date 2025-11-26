@@ -1,4 +1,3 @@
-
 package com.jhainusa.netourism
 
 import android.app.Activity
@@ -56,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -83,8 +83,9 @@ val poppinsSOS = FontFamily(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
-              context : Context = LocalContext.current
+fun SOSScreen(
+    navController: NavController, viewModel: ChatViewModel,
+    context: Context = LocalContext.current
 ) {
 
     val user = context.getUserPrefs().getUser()
@@ -112,7 +113,7 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
         putExtra(RecognizerIntent.EXTRA_LANGUAGE, "hi-IN") // Correct format for Hindi
         putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "hi-IN")
         putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true)
-        putExtra(RecognizerIntent.EXTRA_PROMPT, "कुछ भी पूछें...")
+        putExtra(RecognizerIntent.EXTRA_PROMPT, stringResource(R.string.ask_anything))
         putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true) // Helps improve accuracy
     }
 
@@ -120,10 +121,10 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Emergency SOS", fontFamily = poppinsSOS, fontWeight = FontWeight.Bold) },
+                title = { Text(stringResource(R.string.emergency_sos), fontFamily = poppinsSOS, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.close))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -145,7 +146,7 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
             Spacer(modifier = Modifier.height(64.dp))
 
             Text(
-                text = "Press and Hold to Send Alert",
+                text = stringResource(R.string.press_and_hold_to_send_alert),
                 fontFamily = poppinsSOS,
                 fontSize = 18.sp,
                 color = Color.Gray
@@ -155,7 +156,7 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
             TextButton(onClick = {
                 speechRecognizerLauncher.launch(intent)
             }) {
-                Text("🎤 Speak", color = Color.Red, fontSize = 16.sp, fontFamily = poppinsSOS)
+                Text(stringResource(R.string.speak), color = Color.Red, fontSize = 16.sp, fontFamily = poppinsSOS)
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -166,7 +167,7 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Your emergency message:",
+                    text = stringResource(R.string.your_emergency_message),
                     fontFamily = poppinsSOS,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
@@ -174,12 +175,12 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
                 TextButton(onClick = { /* TODO: Handle Edit */ }) {
                     Icon(
                         Icons.Default.Edit,
-                        contentDescription = "Edit",
+                        contentDescription = stringResource(R.string.edit),
                         tint = Color.Red,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Edit", color = Color.Red, fontFamily = poppinsSOS)
+                    Text(stringResource(R.string.edit), color = Color.Red, fontFamily = poppinsSOS)
                 }
             }
             LazyColumn(
@@ -197,7 +198,7 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
                 value = userInput,
                 onValueChange = { userInput = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Enter your issue", color = Color.Black) },
+                placeholder = { Text(stringResource(R.string.enter_your_issue), color = Color.Black) },
                 textStyle = TextStyle(
                     color = Color.Black,
                     fontFamily = poppinsLogin,
@@ -205,8 +206,7 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
                     fontSize = 16.sp
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                ),
+                colors = OutlinedTextFieldDefaults.colors(),
                 singleLine = true
             )
             val alert = Alert(
@@ -221,24 +221,23 @@ fun SOSScreen(navController: NavController,viewModel: ChatViewModel,
 
             TextButton(onClick = {
                 if (userInput.text.isNotBlank()) {
-                    if(viewModel.isNetworkAvailable()){
+                    if (viewModel.isNetworkAvailable()) {
                         reportViewModel.uploadAlertToServer(
                             alert = alert
                         )
-                    }
-                    else {
-                        viewModel.sendMessage("$userInput \n $alert" )
+                    } else {
+                        viewModel.sendMessage("$userInput \n $alert")
                     }
                     userInput = TextFieldValue("")
                 }
             }) {
-                Text("SEND", color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = poppinsSOS)
+                Text(stringResource(R.string.send), color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = poppinsSOS)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
             TextButton(onClick = { navController.popBackStack() }) {
-                Text("Cancel", color = Color.Gray, fontSize = 14.sp, fontFamily = poppinsSOS)
+                Text(stringResource(R.string.cancel), color = Color.Gray, fontSize = 14.sp, fontFamily = poppinsSOS)
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -298,7 +297,7 @@ fun SOSButton() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "SOS",
+                text = stringResource(R.string.sos),
                 color = Color.White,
                 fontSize = 60.sp,
                 fontFamily = poppinsSOS,
@@ -308,9 +307,10 @@ fun SOSButton() {
         }
     }
 }
+
 @Composable
 fun MessageBubble(msg: ChatMessage) {
-    val align  = if (msg.isMine) Alignment.End else Alignment.Start
+    val align = if (msg.isMine) Alignment.End else Alignment.Start
     val color = if (msg.isMine) Color(0xFFD0F0FF) else Color(0xFFEDEDED)
 
     Box(
@@ -326,3 +326,4 @@ fun MessageBubble(msg: ChatMessage) {
         )
     }
 }
+

@@ -40,6 +40,7 @@ class UserPreferencesManager(val context: Context) {
         private const val KEY_UPDATED_AT = "updated_at"
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
         private const val KEY_USER_JSON = "user_json" // For storing entire user as JSON
+        private const val KEY_LANGUAGE = "language"
     }
 
     // Save entire User object
@@ -102,6 +103,13 @@ class UserPreferencesManager(val context: Context) {
             null
         }
     }
+
+    // Language preference
+    fun saveLanguage(language: String) {
+        prefs.edit().putString(KEY_LANGUAGE, language).apply()
+    }
+
+    fun getLanguage(): String? = prefs.getString(KEY_LANGUAGE, null)
 
     // Individual getters
     fun getUserId(): String? = prefs.getString(KEY_USER_ID, null)

@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">एनई टूरिज्म</string>
+    <string name="location">शिलांग, मेघालय</string>
+    <string name="safety_level">सुरक्षा स्तर: कम जोखिम</string>
+    <string name="notifications">सूचनाएं</string>
+    <string name="add">जोड़ें</string>
+    <string name="search_your_place">अपनी जगह खोजें</string>
+    <string name="search_icon">खोज आइकन</string>
+    <string name="quick_actions">त्वरित कार्रवाई</string>
+    <string name="emergency">आपातकाल</string>
+    <string name="safety_tips">सुरक्षा युक्तियाँ</string>
+    <string name="safe_zones">सुरक्षित क्षेत्र</string>
+    <string name="report">रिपोर्ट</string>
+    <string name="recommended">अनुशंसित</string>
+    <string name="see_all">सभी देखें</string>
+    <string name="location_content_description">स्थान पिन</string>
+    <string name="nongriat_village">नोंगियोंग गांव</string>
+    <string name="shillong">शिलांग</string>
+    <string name="mountain_trek">पहाड़ की पदयात्रा</string>
+    <string name="cherapunji">चेरापूंजी</string>
+    <string name="elephant_falls">हाथी झरना</string>
+    <string name="emergency_sos">आपातकालीन एसओएस</string>
+    <string name="close">बंद करें</string>
+    <string name="press_and_hold_to_send_alert">अलर्ट भेजने के लिए दबाकर रखें</string>
+    <string name="speak">🎤 बोलें</string>
+    <string name="your_emergency_message">आपका आपातकालीन संदेश:</string>
+    <string name="edit">संपादित करें</string>
+    <string name="enter_your_issue">अपनी समस्या दर्ज करें</string>
+    <string name="send">भेजें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="sos">एसओएस</string>
+    <string name="ask_anything">कुछ भी पूछें...</string>
+</resources>
