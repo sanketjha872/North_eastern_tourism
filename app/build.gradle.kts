@@ -79,6 +79,9 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:storage-kt")
     implementation("io.github.jan-tennert.supabase:realtime-kt")
 
+    implementation("androidx.compose.animation:animation:1.7.0")
+
+
 // Ktor client (required)
     implementation("io.ktor:ktor-client-android:2.3.4")
 

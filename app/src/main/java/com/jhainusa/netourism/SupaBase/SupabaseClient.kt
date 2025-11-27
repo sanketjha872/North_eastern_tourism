@@ -11,14 +11,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jhainusa.netourism.SupaBase.Supabase.client
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
+import com.jhainusa.netourism.Zones.Zone
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.realtime.Realtime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
@@ -64,6 +67,13 @@ suspend fun uploadAlert(alert: Alert): Boolean {
         false
     }
 }
+suspend fun loadZones() : List<Zone> {
+     return client
+            .from("zones")
+            .select()
+            .decodeList<Zone>()
+}
+
 
 class ReportViewModel( private val prefsManager: UserPreferencesManager
 ) : ViewModel() {
@@ -74,17 +84,29 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
     private val _saved = MutableStateFlow<User?>(null)
     val saver : StateFlow<User?> = _saved
 
+    private val _zones = MutableStateFlow<List<Zone>>(emptyList())
+    val zones = _zones.asStateFlow()
 
     fun fetchUsers() {
         viewModelScope.launch {
-
-
             try {
                 val list = fetchAllUsers()
                 Log.d("users", list.toString())
 
             } catch (e: Exception) {
                 print(e)
+            }
+        }
+    }
+
+    fun fetchZones() {
+        viewModelScope.launch {
+            try {
+                val list = loadZones()
+                Log.d("zones",list.toString())
+                _zones.value = list
+            } catch (e: Exception) {
+                Log.e("zones_error", e.toString())
             }
         }
     }
@@ -126,20 +148,6 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
                 Log.e("Alert", "Cannot send alert — No user logged in")
                 return@launch
             }
-
-            // 2. Create the Alert object
-//            val alert = Alert(
-//                tourist_id = touristId,
-//                alert_type = alertType,
-//                severity = "medium",
-//                description = description,
-//                location_name = "North Eastern",
-//                latitude = latitude,
-//                longitude = longitude
-//            )
-
-
-            // 4. Try uploading
             try {
                 val result = uploadAlert(alert)
 

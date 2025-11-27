@@ -1,6 +1,10 @@
 package com.jhainusa.netourism
 
+import android.util.Log
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.jhainusa.netourism.SupaBase.ReportViewModel
 
 val poppinsFontFamily1 = FontFamily(
     Font(R.font.manrope_medium)
@@ -57,12 +62,15 @@ val sampleRecommendedPlaces = listOf(
     RecommendedPlaceData("Elephant Falls", R.drawable.nohakili, "Shillong", 5, false)
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun FirstPageScreen(mainNav: NavController = rememberNavController()) {
+fun SharedTransitionScope.FirstPageScreen(
+    mainNav: NavController = rememberNavController(),
+    navController: NavController = rememberNavController(),
+    viewModel: ReportViewModel,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
     var searchQuery by remember { mutableStateOf("") }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -183,7 +191,7 @@ fun FirstPageScreen(mainNav: NavController = rememberNavController()) {
                 Spacer(modifier = Modifier.height(24.dp))
                 QuickActionsSection()
                 Spacer(modifier = Modifier.height(24.dp))
-                RecommendedSection()
+                RecommendedSection(navController = navController, animatedVisibilityScope = animatedVisibilityScope)
             }
         }
     }
@@ -244,8 +252,9 @@ fun QuickAction(painter: Painter, text: String) {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun RecommendedSection() {
+fun SharedTransitionScope.RecommendedSection(navController: NavController, animatedVisibilityScope: AnimatedVisibilityScope) {
     Column(modifier = Modifier) {
         Row(
             modifier = Modifier
@@ -273,18 +282,20 @@ fun RecommendedSection() {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(sampleRecommendedPlaces) { place ->
-                RecommendedPlaceCard(place = place)
+                RecommendedPlaceCard(place = place, navController = navController, animatedVisibilityScope = animatedVisibilityScope)
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun RecommendedPlaceCard(place: RecommendedPlaceData) {
+fun SharedTransitionScope.RecommendedPlaceCard(place: RecommendedPlaceData, navController: NavController, animatedVisibilityScope: AnimatedVisibilityScope) {
 
     Card(
-        modifier = Modifier.width(200.dp),
+        modifier = Modifier
+            .width(200.dp)
+            .clickable { navController.navigate("place_details/${place.name}/${place.imageResId}/${place.location}") },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xE5F7F8F9)
@@ -305,6 +316,10 @@ fun RecommendedPlaceCard(place: RecommendedPlaceData) {
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(17.dp))
+                        .sharedElement(
+                            rememberSharedContentState(key = "image/${place.imageResId}"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
                 )
             }
             Column(modifier = Modifier.padding(12.dp)) {

@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -19,11 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.MeshNetworking.MeshCore
+import com.jhainusa.netourism.SupaBase.ReportViewModel
+import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
 import com.jhainusa.netourism.ui.theme.NETourismTheme
 
@@ -48,10 +50,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @OptIn(ExperimentalAnimationApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set language before UI is created
+        val reportViewModel = ViewModelProvider(
+            this,
+            ReportViewModelFactory(prefsManager)
+        ).get(ReportViewModel::class.java)
+
         prefsManager.getLanguage()?.let {
             val appLocale = LocaleListCompat.forLanguageTags(it)
             AppCompatDelegate.setApplicationLocales(appLocale)
@@ -69,51 +75,30 @@ class MainActivity : AppCompatActivity() {
         MeshCore.init(applicationContext, prefsManager)
 
         setContent {
-            val navController = rememberAnimatedNavController()
+            val navController = rememberNavController()
 
             NETourismTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-
-                    AnimatedNavHost(
-
+                    NavHost(
                         navController = navController,
                         startDestination =
                         if (prefsManager.hasUser()) "AllScreenNav"
                         else "OnboardingScreen",
-
-                        enterTransition = {
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(300)
-                            )
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(300)
-                            )
-                        }
                     ) {
                         composable("login") {
-                            SecureLoginScreen(navController)
-                        }
-                        composable("userinfo") {
-                            SecureLoginScreen(navController)
+                            SecureLoginScreen(navController, viewModel = reportViewModel)
                         }
                         composable("news") {
                             NewsScreen(navController)
                         }
                         composable("DrawerContent") {
-                            DrawerContent(navController =navController)
+                            DrawerContent(navController = navController)
                         }
                         composable("AllScreenNav") {
-                            MainApp(navController, MeshCore.chatViewModel)
+                            MainApp(navController, MeshCore.chatViewModel, reportViewModel)
                         }
                         composable("OnboardingScreen") {
                             OnboardingScreen(navController)
-                        }
-                        composable("FirstPageScreen") {
-                            FirstPageScreen(mainNav = navController)
                         }
                         composable("LanguageSelectionScreen") {
                             LanguageSelectionScreen(navController)
@@ -122,14 +107,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-    }
-}
-
-// Button to navigate to the language selection screen
-@Composable
-fun ChangeLanguageButton(navController: NavController) {
-    Button(onClick = { navController.navigate("LanguageSelectionScreen") }) {
-        Text(stringResource(R.string.toggle_language))
     }
 }

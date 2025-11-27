@@ -1,23 +1,25 @@
 package com.jhainusa.netourism.Map
 
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.Snackbar
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +31,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.preference.PreferenceManager
+import com.jhainusa.netourism.R
+import com.jhainusa.netourism.SupaBase.ReportViewModel
+import com.jhainusa.netourism.Zones.Zone
 import com.jhainusa.netourism.poppinsFontFamily1
 import com.jhainusa.netourism.ui.theme.blue
 import kotlinx.coroutines.CoroutineScope
@@ -40,45 +46,120 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.views.overlay.Polyline
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
+val sh = listOf(
+    28.6008 to 77.3503,  // Sector 56 Center
+    28.6029 to 77.3562,  // Shopprix Mall (Sector 61)
+    28.6014 to 77.3489,  // Sector 56–57 Market
+    28.5997 to 77.3495,  // Balak Nath Mandir
+    28.6011 to 77.3518,  // Sector 56 Park
+    28.60215 to 77.35810, // Sector 55–56 Metro Station
+    28.5989 to 77.3529,  // Manav Rachna Public School
+    28.5994 to 77.3469,  // Kendriya Vihar Society
+    28.60185 to 77.36050, // Mahagun Moderne Gate
+    28.6272 to 77.3656   // Jaipuria Plaza (Sector 62)
+)
+data class ZoneShape(
+    val points: List<GeoPoint>,
+    val color: Int
+)
+
+fun Zone.getMapPointsWithColor(): ZoneShape {
+    val polygonPoints = if (latitude != null && longitude != null) {
+        Polygon.pointsAsCircle(GeoPoint(latitude, longitude), radius_meters ?: 100.0)
+    } else {
+        geom?.coordinates?.firstOrNull()?.map { GeoPoint(it[1], it[0]) } ?: emptyList()
+    }
+
+    // Pick color based on zone type, radius, or just randomly
+    val fillColor = when (risk_level) {
+        "LOW" -> android.graphics.Color.argb(100, 255, 0, 0)  // red
+        "MEDIUM" -> android.graphics.Color.argb(180, 220, 20, 60)
+        else -> android.graphics.Color.argb(255,139, 0, 0)      // blue
+    }
+
+    return ZoneShape(polygonPoints, fillColor)
+}
+
+
+
 @Composable
-fun NavigationScreen() {
+fun NavigationScreen(points: List<Pair<Double, Double>> = sh,
+                     viewModel: ReportViewModel) {
+
+    val zones by viewModel.zones.collectAsState(initial = emptyList())
     val context = LocalContext.current
     var startText by remember { mutableStateOf("") }
     var endText by remember { mutableStateOf("") }
     var mapView: MapView? by remember { mutableStateOf(null) }
+    var routePolyline: Polyline? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(Unit) { viewModel.fetchZones() }
 
     Box(Modifier.fillMaxSize()) {
-        // OSMDroid Map
         AndroidView(
-            modifier = Modifier.fillMaxSize(),
-            factory = { context ->
-
-                // Load config
-                Configuration.getInstance().load(
-                    context,
-                    PreferenceManager.getDefaultSharedPreferences(context)
-                )
-
-                val map = MapView(context).apply {
+            factory = { ctx ->
+                // OSMDroid setup
+                Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+                val map = MapView(ctx).apply {
                     setMultiTouchControls(true)
                     controller.setZoom(18.0)
+                    tileProvider.tileSource = TileSourceFactory.MAPNIK
                 }
 
-                // 🔵 Show current location
-                val locationOverlay = MyLocationNewOverlay(
-                    GpsMyLocationProvider(context),
-                    map
-                )
-                locationOverlay.enableMyLocation()
-                locationOverlay.enableFollowLocation()  // map follows your movement
+                // Rotation
+                val rotationOverlay = org.osmdroid.views.overlay.gestures.RotationGestureOverlay(map)
+                rotationOverlay.isEnabled = true
+                map.overlays.add(rotationOverlay)
 
+                // Current location
+                val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(ctx), map)
+                locationOverlay.enableMyLocation()
+                locationOverlay.enableFollowLocation()
                 map.overlays.add(locationOverlay)
 
+                mapView = map
                 map
+            },
+            update = { map ->
+                // Clear previous polygons & markers (keep location overlay)
+                map.overlays.removeAll { it is Polygon || it is Marker }
+
+                // Draw zones
+                zones.forEach { zone ->
+                    val shape = zone.getMapPointsWithColor()
+                    if (shape.points.isNotEmpty()) {
+                        val polygon = Polygon().apply {
+                           this. points = shape.points
+                            fillColor = shape.color
+                            strokeColor = shape.color
+                            strokeWidth = 4f
+                        }
+                        map.overlays.add(polygon)
+
+                        val marker = Marker(map).apply {
+                            position = shape.points.first()
+                            icon = context.getDrawable(R.drawable.location_pin_svgrepo_com) // test icon
+                            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                        }
+                        map.overlays.add(marker)
+                    }
+                }
+
+                // Re-add route if exists
+                routePolyline?.let { map.overlays.add(it) }
+
+                // Center map on first zone or fallback
+                val centerPoint = zones.firstOrNull()?.getMapPointsWithColor()?.points?.firstOrNull()
+                    ?: GeoPoint(28.6008, 77.3503)
+                map.controller.setCenter(centerPoint)
+                map.invalidate()
             }
         )
 
@@ -131,9 +212,10 @@ fun NavigationScreen() {
                     fetchRoute(startText, endText, mapView)
                 },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = blue
+                    containerColor = blue
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.padding(horizontal = 5.dp)
             ) {
                 Text("Start Navigation",
                     fontFamily = poppinsFontFamily1,
@@ -195,7 +277,7 @@ fun fetchRoute(start: String, end: String, map: MapView?) {
             // --- DRAW POLYLINE ---
             val coords = route.paths[0].points.coordinates
             val polyline = Polyline().apply {
-                outlinePaint.color = color
+                outlinePaint.color = android.graphics.Color.BLUE
                 outlinePaint.strokeWidth = 12f
                 coords.forEach { addPoint(GeoPoint(it[1], it[0])) }
             }
@@ -216,4 +298,3 @@ fun fetchRoute(start: String, end: String, map: MapView?) {
         }
     }
 }
-

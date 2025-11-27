@@ -44,25 +44,12 @@ val poppinsLogin = FontFamily(
 )
 
 @Composable
-fun SecureLoginScreen(navController: NavController, context: Context = LocalContext.current) {
+fun SecureLoginScreen(navController: NavController, context: Context = LocalContext.current,
+                      viewModel: ReportViewModel) {
     var uniqueId by remember { mutableStateOf(TextFieldValue("")) }
     val prefsManager = remember { UserPreferencesManager(context) }
 
-    val viewModel: ReportViewModel = viewModel(
-        factory = ReportViewModelFactory(prefsManager)
-    )
 
-//    LaunchedEffect(Unit) {
-//        viewModel.uploadAlertToServer(
-//            touristId = "TID-DEL-MI95875E-D0952A80",
-//            alertType = "Ambulance bhejo saalo",
-//            severity = "high",
-//            description = "Mera Ghee Khatam ho gya hai",
-//            locationName = "Sector 28 Market",
-//            latitude = 21.5562,
-//            longitude = 78.1010
-//        )
-//    }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

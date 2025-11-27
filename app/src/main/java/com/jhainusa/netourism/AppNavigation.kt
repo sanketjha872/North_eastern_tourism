@@ -2,9 +2,9 @@ package com.jhainusa.netourism
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -14,25 +14,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.Map.NavigationScreen
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
-import com.jhainusa.netourism.SupaBase.TouristProfileScreen
+import com.jhainusa.netourism.SupaBase.ReportViewModel
 
 // Define Poppins font family (assuming poppinsmedium.ttf in res/font)
 val poppinsFontFamilyAppNav = FontFamily(
@@ -96,31 +93,34 @@ fun AppBottomNavigationBar(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun AppNavigationHost(navController: NavHostController, innerPadding: PaddingValues,mainNav: NavController,viewModel: ChatViewModel) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Home.route,
-        modifier = Modifier.padding(innerPadding)
-    ) {
-        composable(Screen.News.route) { NewsScreen(navController)} // Assuming OnboardingScreen is the new Login/News screen
-        composable(Screen.Home.route) { FirstPageScreen(mainNav) } // Assuming FirstPageScreen is your home screen content
-        composable(Screen.Map.route) { NavigationScreen()} //JourneyTimelineScreen(navController) }
-        composable(Screen.Panic.route) { SOSScreen(navController,viewModel) }
-        composable(Screen.Profile.route) { TouristProfileScreen(onBack = {}, onEdit = {},
-            navController)
-            }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainApp(mainNav : NavController,viewModel: ChatViewModel) {
+fun MainApp(mainNav : NavController,viewModel: ChatViewModel,reportViewModel: ReportViewModel) {
     val navController = rememberNavController()
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
         bottomBar = { AppBottomNavigationBar(navController = navController)}
     ) { innerPadding ->
-        AppNavigationHost(navController = navController, innerPadding = innerPadding,mainNav,viewModel)
+        SharedTransitionLayout {
+            NavHost(navController = navController, startDestination = Screen.Home.route) {
+                composable(Screen.News.route) { NewsScreen(navController) }
+                composable(Screen.Home.route) { FirstPageScreen(mainNav, navController, reportViewModel, this) }
+                composable(Screen.Map.route) { NavigationScreen(viewModel = reportViewModel) }
+                composable(Screen.Panic.route) { SOSScreen(navController,viewModel) }
+                composable(Screen.Profile.route) { TouristProfileScreen(onBack = {}, onEdit = {}, navController) }
+                composable("place_details/{placeName}/{placeImageResId}/{placeLocation}") { backStackEntry ->
+                    val placeName = backStackEntry.arguments?.getString("placeName")
+                    val placeImageResId = backStackEntry.arguments?.getString("placeImageResId")?.toIntOrNull()
+                    val placeLocation = backStackEntry.arguments?.getString("placeLocation")
+                    PlaceDetailsScreen(
+                        navController = navController,
+                        placeName = placeName,
+                        placeImageResId = placeImageResId,
+                        placeLocation = placeLocation,
+                        animatedVisibilityScope = this
+                    )
+                }
+            }
+        }
     }
 }
