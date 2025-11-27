@@ -3,6 +3,7 @@ package com.jhainusa.netourism
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -81,7 +83,7 @@ fun SharedTransitionScope.PlaceDetailsScreen(
         }
 
         Card() {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
@@ -100,79 +102,75 @@ fun SharedTransitionScope.PlaceDetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Row(
-                    modifier = Modifier.padding(top = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = placeName,
-                            fontSize = 26.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = poppinsFontFamily1,
-                            color = Color(0xFF262626)
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
+                item {
+                    Row(
+                        modifier = Modifier.padding(top = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = placeName,
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = poppinsFontFamily1,
+                                color = Color(0xFF262626)
+                            )
+                            Spacer(modifier = Modifier.height(5.dp))
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
                                     painterResource(R.drawable.location_pin_alt_1_svgrepo_com),
                                     contentDescription = "",
                                     tint = Color(0xFF6F7A8A),
                                     modifier = Modifier.size(18.dp)
                                 )
-                            if (placeLocation != null) {
-                                Text(
-                                    text = placeLocation,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppinsFontFamily1,
-                                    color = Color(0xFF6F7A8A)
-                                )
+                                if (placeLocation != null) {
+                                    Text(
+                                        text = placeLocation,
+                                        fontSize = 14.sp,
+                                        fontFamily = poppinsFontFamily1,
+                                        color = Color(0xFF6F7A8A)
+                                    )
+                                }
                             }
+                        }
+
+                        IconButton(
+                            onClick = {},
+                            modifier = Modifier.clip(CircleShape)
+                                .background(Color.White)
+                        ) {
+                            Icon(
+                                Icons.Default.FavoriteBorder,
+                                contentDescription = "",
+                                tint = Color.Black,
+                                modifier = Modifier.size(26.dp)
+                            )
                         }
                     }
 
-                    IconButton(
-                        onClick = {},
-                        modifier = Modifier.clip(CircleShape)
-                            .background(Color.White)
-                    ) {
-                        Icon(
-                            Icons.Default.FavoriteBorder,
-                            contentDescription = "",
-                            tint = Color.Black,
-                            modifier = Modifier.size(26.dp)
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    StatsRow()
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Text(
+                        text = "$placeName is a serene village in Meghalaya, famous for its living root bridges, including the iconic Double Decker Bridge. Nestled deep in the rainforest, it offers breathtaking nature trails, crystal-clear streams.",
+                        fontSize = 14.sp,
+                        fontFamily = poppinsFontFamily1,
+                        color = Color(0xFF5A5A5A),
+                        lineHeight = 23.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    StartJourneyButton()
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                StatsRow()
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = "$placeName is a serene village in Meghalaya, famous for its living root bridges, including the iconic Double Decker Bridge. Nestled deep in the rainforest, it offers breathtaking nature trails, crystal-clear streams.",
-                    fontSize = 15.sp,
-                    fontFamily = poppinsFontFamily1,
-                    color = Color(0xFF5A5A5A),
-                    lineHeight = 23.sp
-                )
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                StartJourneyButton()
             }
         }
     }
-
-}
-
-
-@Composable
-fun ContentCard() {
 
 }
 
@@ -209,13 +207,13 @@ fun StatItem(title: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = title,
-            fontSize = 13.sp,
+            fontSize = 12.sp,
             fontFamily = poppinsFontFamily1,
             color = Color(0xFF7B8A97)
         )
         Text(
             text = value,
-            fontSize = 20.sp,
+            fontSize = 16.sp,
             fontFamily = poppinsFontFamily1,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1A1A1A)
@@ -227,17 +225,18 @@ fun StatItem(title: String, value: String) {
 fun StartJourneyButton() {
     Button(
         onClick = {},
-        modifier = Modifier.height(60.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+            .height(50.dp),
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = blue
-        )
+            containerColor = Color.White
+        ),
     ) {
         Text(
             text = "Start Journey",
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             fontFamily = poppinsFontFamily1,
-            color = Color.White
+            color = blue
         )
     }
 }
