@@ -7,10 +7,10 @@
     <string name="search_your_place">Search your place</string>
     <string name="search_icon">Search Icon</string>
     <string name="quick_actions">Quick Actions</string>
-    <string name="emergency">Emergency</string>
-    <string name="safety_tips">Safety Tips</string>
+    <string name="emergency">HomeStay</string>
+    <string name="safety_tips">DO\'s and Don\'t</string>
     <string name="safe_zones">Safe Zones</string>
-    <string name="report">Report</string>
+    <string name="report">Explore</string>
     <string name="recommended">Recommended</string>
     <string name="see_all">See all</string>
     <string name="location_content_description">Location Pin</string>

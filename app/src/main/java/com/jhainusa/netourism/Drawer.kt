@@ -34,7 +34,8 @@ import com.jhainusa.netourism.UserPreferences.getUserPrefs
 fun DrawerContent(context : Context = LocalContext.current,
                   navController: NavController) {
      val user = context.getUserPrefs().getUser()
-    Column(modifier = Modifier.background( Color(0xFFFBFBF9))) {
+    Column(modifier = Modifier.background( Color(0xFFFBFBF9))
+        .padding(bottom = 30.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,7 +60,6 @@ fun DrawerContent(context : Context = LocalContext.current,
 
             // User Info
         LazyColumn(
-
         ) {
             item {
                 Card(

@@ -6,8 +6,11 @@ import android.content.Intent
 import android.speech.RecognizerIntent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -19,6 +22,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,18 +31,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -60,6 +68,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,6 +97,10 @@ fun SOSScreen(
     context: Context = LocalContext.current
 ) {
 
+    var message by remember { mutableStateOf(
+        "I am in an emergency situation and need help. " +
+                "This is my current location. Please contact authorities immediately."
+    )}
     val user = context.getUserPrefs().getUser()
 
     var userInput by remember { mutableStateOf(TextFieldValue("")) }
@@ -143,7 +156,7 @@ fun SOSScreen(
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(64.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Text(
                 text = stringResource(R.string.press_and_hold_to_send_alert),
@@ -151,38 +164,37 @@ fun SOSScreen(
                 fontSize = 18.sp,
                 color = Color.Gray
             )
+            Spacer(modifier = Modifier.height(20.dp))
+            SOSButton(onTap = {}, onLongPress = { speechRecognizerLauncher.launch(intent)
+            })
 
             Spacer(modifier = Modifier.height(32.dp))
-            TextButton(onClick = {
-                speechRecognizerLauncher.launch(intent)
-            }) {
-                Text(stringResource(R.string.speak), color = Color.Red, fontSize = 16.sp, fontFamily = poppinsSOS)
-            }
+            EmergencyMessageCard(message, onMessageChange = {message = it})
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.your_emergency_message),
-                    fontFamily = poppinsSOS,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                TextButton(onClick = { /* TODO: Handle Edit */ }) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.edit),
-                        tint = Color.Red,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.edit), color = Color.Red, fontFamily = poppinsSOS)
-                }
-            }
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = stringResource(R.string.your_emergency_message),
+//                    fontFamily = poppinsSOS,
+//                    fontSize = 16.sp,
+//                    fontWeight = FontWeight.Medium
+//                )
+//                TextButton(onClick = { /* TODO: Handle Edit */ }) {
+//                    Icon(
+//                        Icons.Default.Edit,
+//                        contentDescription = stringResource(R.string.edit),
+//                        tint = Color.Red,
+//                        modifier = Modifier.size(16.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    Text(stringResource(R.string.edit), color = Color.Red, fontFamily = poppinsSOS)
+//                }
+//            }
             LazyColumn(
                 modifier = Modifier.weight(1f),
                 reverseLayout = true
@@ -194,41 +206,41 @@ fun SOSScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = userInput,
-                onValueChange = { userInput = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(stringResource(R.string.enter_your_issue), color = Color.Black) },
-                textStyle = TextStyle(
-                    color = Color.Black,
-                    fontFamily = poppinsLogin,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp
-                ),
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(),
-                singleLine = true
-            )
+//            OutlinedTextField(
+//                value = userInput,
+//                onValueChange = { userInput = it },
+//                modifier = Modifier.fillMaxWidth(),
+//                placeholder = { Text(stringResource(R.string.enter_your_issue), color = Color.Black) },
+//                textStyle = TextStyle(
+//                    color = Color.Black,
+//                    fontFamily = poppinsLogin,
+//                    fontWeight = FontWeight.SemiBold,
+//                    fontSize = 16.sp
+//                ),
+//                shape = RoundedCornerShape(12.dp),
+//                colors = OutlinedTextFieldDefaults.colors(),
+//                singleLine = true
+//            )
             val alert = Alert(
                 tourist_id = user?.touristId.toString(),
                 alert_type = "Ambulance",
                 severity = "medium",
-                description = userInput.text,
+                description = message,
                 location_name = "North Eastern",
                 latitude = 21.5562,
                 longitude = 78.1010
             )
 
             TextButton(onClick = {
-                if (userInput.text.isNotBlank()) {
+                if (message.isNotBlank()) {
                     if (viewModel.isNetworkAvailable()) {
                         reportViewModel.uploadAlertToServer(
                             alert = alert
                         )
                     } else {
-                        viewModel.sendMessage("$userInput \n $alert")
+                        viewModel.sendMessage("${message} \n $alert")
                     }
-                    userInput = TextFieldValue("")
+                    message = "MESSAGE SENT SUCCESSFULLY"
                 }
             }) {
                 Text(stringResource(R.string.send), color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = poppinsSOS)
@@ -245,8 +257,9 @@ fun SOSScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SOSButton() {
+fun SOSButton(onLongPress : () -> Unit ,onTap : () -> Unit ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -254,14 +267,13 @@ fun SOSButton() {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(240.dp)
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        // TODO: Handle long press to send alert
-                    }
-                )
-            }
             .clip(CircleShape)
+            .combinedClickable(
+                onClick = { onTap() },
+                onLongClick = { onLongPress() },
+                indication = LocalIndication.current,        // Ripple effect
+                interactionSource = remember { MutableInteractionSource() }
+            )
 
     ) {
         val outerColor = Color(0xFFFF8A80) // Lighter red
@@ -288,12 +300,7 @@ fun SOSButton() {
             modifier = Modifier
                 .size(200.dp)
                 .clip(CircleShape)
-                .background(innerColor)
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null, // No ripple effect
-                    onClick = {}
-                ),
+                .background(innerColor),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -326,4 +333,75 @@ fun MessageBubble(msg: ChatMessage) {
         )
     }
 }
+@Composable
+fun EmergencyMessageCard(message : String, onMessageChange : (String) -> Unit ) {
+    var isEditing by remember { mutableStateOf(false) }
+
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().imePadding()
+        ) {
+            Text(
+                text = stringResource(R.string.your_emergency_message),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                fontFamily = poppinsSOS
+            )
+            TextButton(onClick = {isEditing = !isEditing }) {
+                Icon(
+                    Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.edit),
+                    tint = Color.Red,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(if(!isEditing) stringResource(R.string.edit) else "Save" , color = Color.Red, fontFamily = poppinsSOS)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (isEditing) {
+            TextField(
+                value = message,
+                onValueChange = onMessageChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp)),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF1F1F1),
+                    unfocusedContainerColor = Color(0xFFF1F1F1),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                textStyle = TextStyle(
+                    fontFamily = poppinsSOS,
+                    color = Color.Black,
+                )
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(0xFFF1F1F1))
+                    .padding(16.dp)
+                    .clickable(onClick ={isEditing = !isEditing} )
+            ) {
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black,
+                    fontFamily = poppinsSOS
+                )
+            }
+        }
+    }
+}
+
 

@@ -1,5 +1,6 @@
 package com.jhainusa.netourism
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -20,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -28,10 +31,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.jhainusa.netourism.LottieAnimation.LottieLoadingScreen
+import com.jhainusa.netourism.News.GNewsArticle
+import com.jhainusa.netourism.News.NewsViewModel
 import com.jhainusa.netourism.ui.theme.NETourismTheme
 import com.jhainusa.netourism.ui.theme.blue
+import kotlinx.coroutines.delay
 
 // Assuming poppinsmedium.ttf is in res/font
 val poppinsNews = FontFamily(
@@ -92,10 +100,18 @@ val sampleNews = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsScreen(navController: NavController) {
+fun NewsScreen(navController: NavController,
+               viewModel: NewsViewModel = viewModel()) {
     var searchText by remember { mutableStateOf("") }
     var selectedChip by remember { mutableStateOf("Safety Alerts") }
+    val isLoading by viewModel.isLoading.collectAsState()
 
+
+    val newsList by viewModel.news.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadNews()
+    }
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp,0.dp),
         topBar = {
@@ -132,8 +148,8 @@ fun NewsScreen(navController: NavController) {
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val chips = listOf("All", "Safety Alerts","Weather", "Travel", "Culture")
-                items(chips,){ chipText ->
+                val chips = listOf("All", "Safety Alerts", "Weather", "Travel", "Culture")
+                items(chips,) { chipText ->
                     val isSelected = selectedChip == chipText
                     Chip(
                         label = chipText,
@@ -146,12 +162,16 @@ fun NewsScreen(navController: NavController) {
             }
 
             // News List
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(sampleNews) { article ->
-                    NewsCard(article = article)
+            if (isLoading) {
+                LottieLoadingScreen("Searching.json")
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(newsList) { article ->
+                        NewsCard(article = article)
+                    }
                 }
             }
         }
@@ -175,17 +195,15 @@ fun Chip(label: String, isSelected: Boolean, onClick: () -> Unit, isSafetyAlert:
 
 
 @Composable
-fun NewsCard(article: NewsArticle) {
+fun NewsCard(article: GNewsArticle) {
+    val uriHandler = LocalUriHandler.current
+
     Card(
+        onClick = {
+            uriHandler.openUri(article.url)
+        },
         modifier = Modifier
-            .fillMaxWidth()
-            .then(
-                if (article.isSafetyAlert) {
-                    Modifier.border(1.dp, Color.Red.copy(alpha = 0.8f), RoundedCornerShape(12.dp))
-                } else {
-                    Modifier
-                }
-            ),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -194,44 +212,41 @@ fun NewsCard(article: NewsArticle) {
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = article.imageResId),
-                contentDescription = article.title,
+            UserImage(
+                article.image,
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                if (article.isSafetyAlert) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Default.Warning,
-                            contentDescription = "Safety Alert",
-                            tint = Color.Red.copy(alpha = 0.8f),
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "SAFETY ALERT: ${article.location}",
-                            color = Color.Red.copy(alpha = 0.8f),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = poppinsNews
-                        )
-                    }
-                } else {
+//                if (article.isSafetyAlert) {
+//                    Row(verticalAlignment = Alignment.CenterVertically) {
+//                        Icon(
+//                            Icons.Default.Warning,
+//                            contentDescription = "Safety Alert",
+//                            tint = Color.Red.copy(alpha = 0.8f),
+//                            modifier = Modifier.size(16.dp)
+//                        )
+//                        Spacer(modifier = Modifier.width(4.dp))
+//                        Text(
+//                            text = "SAFETY ALERT: ${article.location}",
+//                            color = Color.Red.copy(alpha = 0.8f),
+//                            fontSize = 12.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            fontFamily = poppinsNews
+//                        )
+//                    }
+//                } else {
                     Text(
-                        text = article.category ?: article.location,
+                        text = article.source.name,
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         fontFamily = poppinsNews
                     )
-                }
 
                 Spacer(modifier = Modifier.height(4.dp))
 
@@ -246,14 +261,16 @@ fun NewsCard(article: NewsArticle) {
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = article.description,
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    fontFamily = poppinsNews
-                )
+                article.description?.let {
+                    Text(
+                        text = it,
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        fontFamily = poppinsNews
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -263,7 +280,7 @@ fun NewsCard(article: NewsArticle) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = article.time,
+                        text = article.publishedAt.take(10)+ "\t\t" +article.publishedAt.takeLast(9),
                         fontSize = 12.sp,
                         color = Color.Gray,
                         fontFamily = poppinsNews

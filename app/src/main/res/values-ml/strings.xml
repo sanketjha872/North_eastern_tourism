@@ -7,10 +7,10 @@
     <string name="search_your_place">നിങ്ങളുടെ സ്ഥലം തിരയുക</string>
     <string name="search_icon">തിരയൽ ഐക്കൺ</string>
     <string name="quick_actions">ദ്രുത പ്രവർത്തനങ്ങൾ</string>
-    <string name="emergency">അടിയന്തരം</string>
-    <string name="safety_tips">സുരക്ഷാ നുറുങ്ങുകൾ</string>
+    <string name="emergency">ഹോംസ്റ്റേ</string>
+    <string name="safety_tips">ചെയ്യേണ്ടതും ചെയ്യരുതാത്തതും</string>
     <string name="safe_zones">സുരക്ഷിത മേഖലകൾ</string>
-    <string name="report">റിപ്പോർട്ട്</string>
+    <string name="report">പരിവേക്ഷണം ചെയ്യുക</string>
     <string name="recommended">ശുപാർശ ചെയ്യുന്നത്</string>
     <string name="see_all">എല്ലാം കാണുക</string>
     <string name="location_content_description">ലൊക്കേഷൻ പിൻ</string>

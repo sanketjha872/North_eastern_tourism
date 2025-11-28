@@ -1,5 +1,6 @@
 package com.jhainusa.netourism
 
+import android.view.WindowInsets
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,16 +67,18 @@ fun OnboardingScreen(navController: NavController) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    Scaffold(bottomBar = {
+    Scaffold(
+        containerColor = Color.White,
+        bottomBar = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
+                .background(Color.White)
+                .padding(24.dp)
+                .padding(bottom = 30.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-
             Button(
                 onClick = {
                     if (pagerState.currentPage < items.size - 1) {
@@ -103,8 +106,6 @@ fun OnboardingScreen(navController: NavController) {
             .padding(paddingValues),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-
-
         ) {
 
             TextButton(
@@ -136,6 +137,7 @@ fun OnboardingPage(item: OnboardingItem) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(horizontal = 40.dp)
     ) {
         if (item.imageRes != 0) {

@@ -7,10 +7,10 @@
     <string name="search_your_place">اپنی جگہ تلاش کریں</string>
     <string name="search_icon">تلاش کا آئیکن</string>
     <string name="quick_actions">فوری اقدامات</string>
-    <string name="emergency">ایمرجنسی</string>
-    <string name="safety_tips">حفاظتی نکات</string>
+    <string name="emergency">ہوم اسٹے</string>
+    <string name="safety_tips">کیا کریں اور کیا نہ کریں</string>
     <string name="safe_zones">محفوظ زون</string>
-    <string name="report">رپورٹ</string>
+    <string name="report">دریافت کریں</string>
     <string name="recommended">تجویز کردہ</string>
     <string name="see_all">سبھی دیکھیں</string>
     <string name="location_content_description">مقام کا پن</string>

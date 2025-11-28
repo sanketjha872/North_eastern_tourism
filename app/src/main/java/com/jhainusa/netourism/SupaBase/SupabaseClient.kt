@@ -19,6 +19,7 @@ import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.realtime.Realtime
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -113,7 +114,6 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
 
     fun loadReportsFromNetwork(id: String) {
         viewModelScope.launch {
-
             try {
                 val data = fetchAllUsersbyBlockchainID(id)
                 if (data != null) {

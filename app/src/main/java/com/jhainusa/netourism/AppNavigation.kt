@@ -97,6 +97,7 @@ fun AppBottomNavigationBar(navController: NavController) {
 @Composable
 fun MainApp(mainNav : NavController,viewModel: ChatViewModel,reportViewModel: ReportViewModel) {
     val navController = rememberNavController()
+    
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
         bottomBar = { AppBottomNavigationBar(navController = navController)}

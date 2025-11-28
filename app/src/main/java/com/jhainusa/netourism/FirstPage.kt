@@ -1,6 +1,5 @@
 package com.jhainusa.netourism
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -8,16 +7,43 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,11 +58,9 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.SupaBase.ReportViewModel
 
 val poppinsFontFamily1 = FontFamily(
@@ -65,17 +89,22 @@ val sampleRecommendedPlaces = listOf(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.FirstPageScreen(
-    mainNav: NavController = rememberNavController(),
-    navController: NavController = rememberNavController(),
+    mainNav: NavController,
+    navController: NavController,
     viewModel: ReportViewModel,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     var searchQuery by remember { mutableStateOf("") }
+
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),   // 🟢 IMPORTANT
         topBar = {
             TopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.location_pin_alt_1_svgrepo_com),
                             contentDescription = stringResource(R.string.location_content_description),
@@ -117,17 +146,19 @@ fun SharedTransitionScope.FirstPageScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                ),
                 modifier = Modifier.padding(end = 5.dp)
-
             )
         },
+
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { },
+                onClick = {},
                 containerColor = Color(0xFF262626),
                 shape = CircleShape,
-                elevation = androidx.compose.material3.FloatingActionButtonDefaults.elevation(16.dp)
+                elevation = FloatingActionButtonDefaults.elevation(16.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.sos_svgrepo_com),
@@ -136,66 +167,77 @@ fun SharedTransitionScope.FirstPageScreen(
                     modifier = Modifier.size(28.dp)
                 )
             }
-        },
-        containerColor = Color(0xFFE0F7FA), // Make scaffold background transparent
+        }
     ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Light blue gradient-like background for the top portion
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFFa8d7f4),
-                                Color.White,
-                                Color.White
-                            )
+
+        // 🟢 FIXED: Background should wrap everything
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        listOf(
+                            Color(0xFFa8d7f4),
+                            Color.White,
+                            Color.White
                         )
                     )
-            )
+                )
+                .padding(paddingValues)    // 🟢 Scaffold padding applied correctly
+        ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues) // Apply padding from scaffold
                     .padding(horizontal = 14.dp)
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = Modifier.height(20.dp))
 
-                    OutlinedTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
-                        placeholder = { Text(stringResource(R.string.search_your_place), fontFamily = poppinsFontFamily1) },
-                        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search_icon)) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 5.dp),
-                        shape = RoundedCornerShape(20.dp),
-                        textStyle = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = poppinsFontFamily1,
-                        ),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedContainerColor = Color.White, // White background
-                            unfocusedContainerColor = Color.White // White background
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    placeholder = {
+                        Text(
+                            stringResource(R.string.search_your_place),
+                            fontFamily = poppinsFontFamily1
                         )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = stringResource(R.string.search_icon)
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 5.dp),
+                    shape = RoundedCornerShape(20.dp),
+                    textStyle = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = poppinsFontFamily1,
+                    ),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     )
-                }
+                )
+
                 Spacer(modifier = Modifier.height(24.dp))
                 QuickActionsSection()
                 Spacer(modifier = Modifier.height(24.dp))
-                RecommendedSection(navController = navController, animatedVisibilityScope = animatedVisibilityScope)
+
+                RecommendedSection(
+                    navController = navController,
+                    animatedVisibilityScope = animatedVisibilityScope
+                )
             }
         }
     }
 }
+
 
 @Composable
 fun QuickActionsSection() {
@@ -215,10 +257,10 @@ fun QuickActionsSection() {
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            QuickAction(painter = painterResource(R.drawable.police_car_light_svgrepo_com), text = stringResource(R.string.emergency))
-            QuickAction(painter = painterResource(R.drawable.police_car_light_svgrepo_com), text = stringResource(R.string.safety_tips))
+            QuickAction(painter = painterResource(R.drawable.home_svgrepo_com__6_), text = stringResource(R.string.emergency))
+            QuickAction(painter = painterResource(R.drawable.info_svgrepo_com), text = stringResource(R.string.safety_tips))
             QuickAction(painter = painterResource(R.drawable.img_4), text = stringResource(R.string.safe_zones))
-            QuickAction(painter = painterResource(R.drawable.police_car_light_svgrepo_com), text = stringResource(R.string.report))
+            QuickAction(painter = painterResource(R.drawable.map_tag_svgrepo_com), text = stringResource(R.string.report))
         }
     }
 }
@@ -236,10 +278,11 @@ fun QuickAction(painter: Painter, text: String) {
                 .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            Image(
+            Icon(
                 painter = painter,
                 contentDescription = text,
-                contentScale = ContentScale.Crop
+                modifier = Modifier.size(36.dp),
+                tint = Color.Unspecified
             )
         }
         Spacer(modifier = Modifier.height(8.dp))

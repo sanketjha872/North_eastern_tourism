@@ -4,25 +4,26 @@ import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.jhainusa.netourism.MeshNetworking.MeshCore
 import com.jhainusa.netourism.SupaBase.ReportViewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
@@ -50,9 +51,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @OptIn(ExperimentalAnimationApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set language before UI is created
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        enableEdgeToEdge()
+
         val reportViewModel = ViewModelProvider(
             this,
             ReportViewModelFactory(prefsManager)
@@ -79,12 +85,19 @@ class MainActivity : AppCompatActivity() {
 
             NETourismTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    NavHost(
+                    AnimatedNavHost(
                         navController = navController,
-                        startDestination =
-                        if (prefsManager.hasUser()) "AllScreenNav"
-                        else "OnboardingScreen",
+                        startDestination = "SplashScreen",
+                        enterTransition = {
+                            slideInHorizontally { it } + fadeIn(tween(200))
+                        },
+                        exitTransition = {
+                            slideOutHorizontally { -it } + fadeOut(tween(200))
+                        }
                     ) {
+                        composable("SplashScreen") {
+                            SplashScreen(navController, prefsManager)
+                        }
                         composable("login") {
                             SecureLoginScreen(navController, viewModel = reportViewModel)
                         }

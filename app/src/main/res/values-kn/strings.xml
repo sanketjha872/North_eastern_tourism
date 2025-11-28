@@ -6,11 +6,11 @@
     <string name="add">ಸೇರಿಸಿ</string>
     <string name="search_your_place">ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಹುಡುಕಿ</string>
     <string name="search_icon">ಹುಡುಕಾಟ ಐಕಾನ್</string>
-    <string name="quick_actions">త్వరిత చర్యలు</string>
-    <string name="emergency">ತುರ್ತು</string>
-    <string name="safety_tips">ಸುರಕ್ಷತಾ ಸಲಹೆಗಳು</string>
+    <string name="quick_actions">ತ್ವರಿತ ಕ್ರಮಗಳು</string>
+    <string name="emergency">ಹೋಂಸ್ಟೇ</string>
+    <string name="safety_tips">ಮಾಡಬೇಕಾದ ಮತ್ತು ಮಾಡಬಾರದ</string>
     <string name="safe_zones">ಸುರಕ್ಷಿತ ವಲಯಗಳು</string>
-    <string name="report">ವರದಿ</string>
+    <string name="report">ಅನ್ವೇಷಿಸಿ</string>
     <string name="recommended">ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ</string>
     <string name="see_all">ಎಲ್ಲವನ್ನೂ ನೋಡಿ</string>
     <string name="location_content_description">ಸ್ಥಳ ಪಿನ್</string>
@@ -27,7 +27,7 @@
     <string name="edit">ಸಂಪಾದಿಸಿ</string>
     <string name="enter_your_issue">ನಿಮ್ಮ ಸಮಸ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
     <string name="send">ಕಳುಹಿಸಿ</string>
-    <string name="cancel">రద్దు చేయి</string>
+    <string name="cancel">ರದ್ದುಮಾಡಿ</string>
     <string name="sos">ಎಸ್ಒಎಸ್</string>
     <string name="ask_anything">ಏನಾದರೂ ಕೇಳಿ...</string>
     <string name="toggle_language">ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಿ</string>

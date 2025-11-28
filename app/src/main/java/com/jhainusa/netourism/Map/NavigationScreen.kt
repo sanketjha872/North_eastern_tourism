@@ -53,18 +53,6 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
-val sh = listOf(
-    28.6008 to 77.3503,  // Sector 56 Center
-    28.6029 to 77.3562,  // Shopprix Mall (Sector 61)
-    28.6014 to 77.3489,  // Sector 56–57 Market
-    28.5997 to 77.3495,  // Balak Nath Mandir
-    28.6011 to 77.3518,  // Sector 56 Park
-    28.60215 to 77.35810, // Sector 55–56 Metro Station
-    28.5989 to 77.3529,  // Manav Rachna Public School
-    28.5994 to 77.3469,  // Kendriya Vihar Society
-    28.60185 to 77.36050, // Mahagun Moderne Gate
-    28.6272 to 77.3656   // Jaipuria Plaza (Sector 62)
-)
 data class ZoneShape(
     val points: List<GeoPoint>,
     val color: Int
@@ -90,7 +78,7 @@ fun Zone.getMapPointsWithColor(): ZoneShape {
 
 
 @Composable
-fun NavigationScreen(points: List<Pair<Double, Double>> = sh,
+fun NavigationScreen(
                      viewModel: ReportViewModel) {
 
     val zones by viewModel.zones.collectAsState(initial = emptyList())

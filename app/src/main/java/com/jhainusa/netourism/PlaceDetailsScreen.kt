@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -95,6 +96,7 @@ fun SharedTransitionScope.PlaceDetailsScreen(
                         )
                     )
                     .padding(horizontal = 20.dp)
+                    .padding(bottom = 100.dp)
                     .sharedElement(
                         rememberSharedContentState(key = "text/$placeName"),
                         animatedVisibilityScope = animatedVisibilityScope
@@ -198,7 +200,7 @@ fun StatsRow() {
                 .height(40.dp)
                 .background(Color.LightGray)
         )
-        StatItem(title = "Sunset", value = "07 pm")
+        StatItem(title = "Close At", value = "7 pm")
     }
 }
 

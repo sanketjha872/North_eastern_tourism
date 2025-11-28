@@ -7,10 +7,10 @@
     <string name="search_your_place">আপনার জায়গা খুঁজুন</string>
     <string name="search_icon">অনুসন্ধান আইকন</string>
     <string name="quick_actions">দ্রুত পদক্ষেপ</string>
-    <string name="emergency">জরুরী</string>
-    <string name="safety_tips">নিরাপত্তা টিপস</string>
+    <string name="emergency">হোমস্টে</string>
+    <string name="safety_tips">করণীয় এবং অকরণীয়</string>
     <string name="safe_zones">নিরাপদ অঞ্চল</string>
-    <string name="report">রিপোর্ট</string>
+    <string name="report">অন্বেষণ</string>
     <string name="recommended">প্রস্তাবিত</string>
     <string name="see_all">সব দেখুন</string>
     <string name="location_content_description">অবস্থান পিন</string>
