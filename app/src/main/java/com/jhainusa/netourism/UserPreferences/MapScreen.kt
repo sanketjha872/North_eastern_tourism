@@ -24,7 +24,7 @@ fun LocationInMap() {
     val location by LocationRepository.lastKnownLocation.collectAsState()
     val currentLocation by LocationRepository.currentPlaceName.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
-        OsmMapScreen()
+       // OsmMapScreen()
         Column {
             if (location != null) {
                 Text(text = "Latitude: ${location?.latitude}")
@@ -37,35 +37,35 @@ fun LocationInMap() {
     }
 }
 
-@Composable
-fun OsmMapScreen() {
-    AndroidView(
-        modifier = Modifier.fillMaxSize(),
-        factory = { context ->
-
-            // Load config
-            Configuration.getInstance().load(
-                context,
-                PreferenceManager.getDefaultSharedPreferences(context)
-            )
-
-            val map = MapView(context).apply {
-                setMultiTouchControls(true)
-                controller.setZoom(18.0)
-            }
-
-            // 🔵 Show current location
-            val locationOverlay = MyLocationNewOverlay(
-                GpsMyLocationProvider(context),
-                map
-            )
-            locationOverlay.enableMyLocation()
-            locationOverlay.enableFollowLocation()  // map follows your movement
-
-            map.overlays.add(locationOverlay)
-
-            map
-        }
-    )
-
-}
+//@Composable
+//fun OsmMapScreen() {
+//    AndroidView(
+//        modifier = Modifier.fillMaxSize(),
+//        factory = { context ->
+//
+//            // Load config
+//            Configuration.getInstance().load(
+//                context,
+//                PreferenceManager.getDefaultSharedPreferences(context)
+//            )
+//
+//            val map = MapView(context).apply {
+//                setMultiTouchControls(true)
+//                controller.setZoom(18.0)
+//            }
+//
+//            // 🔵 Show current location
+//            val locationOverlay = MyLocationNewOverlay(
+//                GpsMyLocationProvider(context),
+//                map
+//            )
+//            locationOverlay.enableMyLocation()
+//            locationOverlay.enableFollowLocation()  // map follows your movement
+//
+//            map.overlays.add(locationOverlay)
+//
+//            map
+//        }
+//    )
+//
+//}
