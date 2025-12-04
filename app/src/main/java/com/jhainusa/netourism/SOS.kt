@@ -117,7 +117,7 @@ fun SOSScreen(
             val spokenText =
                 result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0)
             spokenText?.let {
-                userInput = TextFieldValue(it)
+                message = it
             }
         }
     }
@@ -341,7 +341,7 @@ fun EmergencyMessageCard(message : String, onMessageChange : (String) -> Unit ) 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().imePadding()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = stringResource(R.string.your_emergency_message),
@@ -382,7 +382,7 @@ fun EmergencyMessageCard(message : String, onMessageChange : (String) -> Unit ) 
                 textStyle = TextStyle(
                     fontFamily = poppinsSOS,
                     color = Color.Black,
-                )
+                ),
             )
         } else {
             Box(

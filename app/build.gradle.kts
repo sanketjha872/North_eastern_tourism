@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.play.services.maps)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.lifecycle.service)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -63,9 +65,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.supabase.kt)
     implementation(libs.supabase.postgrest)
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
-    implementation("com.google.accompanist:accompanist-pager:0.34.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
     // MapmyIndia SDK
 // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.6.0")
@@ -81,6 +81,10 @@ dependencies {
 
     implementation("androidx.compose.animation:animation:1.7.0")
 
+
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation("com.google.accompanist:accompanist-pager:0.34.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
 
 // Ktor client (required)
     implementation("io.ktor:ktor-client-android:2.3.4")
@@ -104,6 +108,14 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.airbnb.android:lottie-compose:6.0.0")
 
+    implementation("androidx.camera:camera-core:1.4.0-alpha01")
+    implementation("androidx.camera:camera-camera2:1.4.0-alpha01")
+    implementation("androidx.camera:camera-lifecycle:1.4.0-alpha01")
+    implementation("androidx.camera:camera-view:1.4.0-alpha01")
+    implementation("androidx.camera:camera-mlkit-vision:1.4.0-alpha01")
 
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 }

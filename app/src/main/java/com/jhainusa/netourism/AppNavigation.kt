@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.Map.NavigationScreen
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModel
+import com.jhainusa.netourism.UserPreferences.LocationInMap
 
 // Define Poppins font family (assuming poppinsmedium.ttf in res/font)
 val poppinsFontFamilyAppNav = FontFamily(
@@ -99,7 +100,6 @@ fun MainApp(mainNav : NavController,viewModel: ChatViewModel,reportViewModel: Re
     val navController = rememberNavController()
     
     Scaffold(
-        contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
         bottomBar = { AppBottomNavigationBar(navController = navController)}
     ) { innerPadding ->
         SharedTransitionLayout {

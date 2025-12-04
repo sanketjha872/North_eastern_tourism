@@ -1,8 +1,10 @@
 package com.jhainusa.netourism
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +26,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.jhainusa.netourism.Map.LocationService
 import com.jhainusa.netourism.MeshNetworking.MeshCore
 import com.jhainusa.netourism.SupaBase.ReportViewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
@@ -47,6 +51,10 @@ class MainActivity : AppCompatActivity() {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(Manifest.permission.NEARBY_WIFI_DEVICES)
+            add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            add(Manifest.permission.FOREGROUND_SERVICE_LOCATION)
         }
     }
 
@@ -72,9 +80,17 @@ class MainActivity : AppCompatActivity() {
 
         val launcher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) { }
+        ) { permissions ->
+            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
+                Log.d("MainActivity", "Location permission granted, starting service")
+                startLocationService()
+            } else {
+                Log.d("MainActivity", "Location permission not granted")
+            }
+        }
 
 
+        Log.d("MainActivity", "Requesting permissions")
         launcher.launch(permissions.toTypedArray())
 
         // Initialize mesh networking (only once)
@@ -104,8 +120,20 @@ class MainActivity : AppCompatActivity() {
                         composable("news") {
                             NewsScreen(navController)
                         }
+                        composable("homeStay"){
+                            HomeStayScreen(navController)
+                        }
+                        composable("HomeStayDetailsScreen") {
+                            HomeStayDetailsScreen()
+                        }
                         composable("DrawerContent") {
                             DrawerContent(navController = navController)
+                        }
+                        composable("AiSafetyScore") {
+                            AiSafetyScore()
+                        }
+                        composable("DosAndDontsScreen"){
+                            DosAndDontsScreen()
                         }
                         composable("AllScreenNav") {
                             MainApp(navController, MeshCore.chatViewModel, reportViewModel)
@@ -119,6 +147,16 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun startLocationService() {
+        Log.d("MainActivity", "startLocationService called")
+        val intent = Intent(this, LocationService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
         }
     }
 }

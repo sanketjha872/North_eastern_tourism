@@ -46,57 +46,6 @@ val poppinsNews = FontFamily(
     Font(R.font.manrope_medium)
 )
 
-data class NewsArticle(
-    val id: String,
-    @DrawableRes val imageResId: Int,
-    val isSafetyAlert: Boolean,
-    val location: String,
-    val title: String,
-    val description: String,
-    val time: String,
-    val category: String? = null
-)
-
-val sampleNews = listOf(
-    NewsArticle(
-        id = "1",
-        imageResId = R.drawable.screenshot_2025_09_11_222500, // Replace
-        isSafetyAlert = true,
-        location = "SIKKIM",
-        title = "Major Landslide on NH10",
-        description = "A major landslide near Sevoke has completely blocked Nation...",
-        time = "30m ago"
-    ),
-    NewsArticle(
-        id = "2",
-        imageResId = R.drawable.screenshot_2025_09_11_222514, // Replace
-        isSafetyAlert = true,
-        location = "MANIPUR",
-        title = "Curfew Imposed in Imphal",
-        description = "Authorities have imposed a curfew in parts of Imphal...",
-        time = "1h ago"
-    ),
-    NewsArticle(
-        id = "3",
-        imageResId = R.drawable.screenshot_2025_09_11_222534, // Replace
-        isSafetyAlert = false,
-        location = "Nagaland",
-        title = "Hornbill Festival Begins",
-        description = "The annual Hornbill Festival, a celebration of Nagaland's rich...",
-        time = "2h ago",
-        category = "Nagaland"
-    ),
-    NewsArticle(
-        id = "4",
-        imageResId = R.drawable.screenshot_2025_09_11_222500, // Replace
-        isSafetyAlert = false,
-        location = "Sikkim",
-        title = "Sikkim Tourism Sees Growth",
-        description = "Sikkim is witnessing a surge in tourist arrivals this season...",
-        time = "4h ago",
-        category = "Sikkim"
-    )
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -138,7 +87,8 @@ fun NewsScreen(navController: NavController,
                 )
             }
         },
-        containerColor = Color(0xFFFBFBF9)
+        containerColor = (Color(0xFFF4F8FA))
+
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             // Filter Chips

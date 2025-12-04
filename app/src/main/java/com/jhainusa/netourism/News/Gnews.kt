@@ -34,7 +34,7 @@ interface GNewsApi {
     suspend fun searchNews(
         @Query("q") query: String,
         @Query("lang") lang: String = "en",
-        @Query("token") token: String = "78c9832a22133a68b05f0b71977fbc88"
+        @Query("token") token: String = "9563359038070f4a4d00bad22a735abb"
     ): GNewsResponse
 }
 object RetrofitClient {

@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="DrawerContent">
+      <SelectionState runConfigName="DosAndDontsScreen">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="EmergencyClassifierScreen">
+      <SelectionState runConfigName="QRScannerOnButtonScreen">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="OnboardingScreenPreview">
+      <SelectionState runConfigName="HomeStayDetailsScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="FirstScreenPreview">
+      <SelectionState runConfigName="HomeStayScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TouristProfileScreenPreview">
+      <SelectionState runConfigName="LocationInMap">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

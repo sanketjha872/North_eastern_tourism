@@ -35,7 +35,8 @@ fun DrawerContent(context : Context = LocalContext.current,
                   navController: NavController) {
      val user = context.getUserPrefs().getUser()
     Column(modifier = Modifier.background( Color(0xFFFBFBF9))
-        .padding(bottom = 30.dp)) {
+        .padding(WindowInsets.statusBars.asPaddingValues())
+    .padding(bottom = 30.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

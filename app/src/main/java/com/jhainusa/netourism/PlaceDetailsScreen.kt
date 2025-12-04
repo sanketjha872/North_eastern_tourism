@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.jhainusa.netourism.ui.theme.back
 import com.jhainusa.netourism.ui.theme.blue
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -61,7 +62,7 @@ fun SharedTransitionScope.PlaceDetailsScreen(
         return
     }
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFC9DEF1))) {
+    Column(modifier = Modifier.fillMaxSize().background(back)) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,8 +91,8 @@ fun SharedTransitionScope.PlaceDetailsScreen(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFFC9DEF1),
-                                Color.White
+                                back,
+                                back
                             )
                         )
                     )
@@ -159,7 +160,7 @@ fun SharedTransitionScope.PlaceDetailsScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Text(
-                        text = "$placeName is a serene village in Meghalaya, famous for its living root bridges, including the iconic Double Decker Bridge. Nestled deep in the rainforest, it offers breathtaking nature trails, crystal-clear streams.",
+                        text = "$placeName is a serene village in Meghalaya, famous for its living root bridges, including the iconic Double Decker Bridge. It offers breathtaking nature trails, crystal-clear streams.",
                         fontSize = 14.sp,
                         fontFamily = poppinsFontFamily1,
                         color = Color(0xFF5A5A5A),
@@ -231,14 +232,14 @@ fun StartJourneyButton() {
             .height(50.dp),
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White
+            containerColor = blue
         ),
     ) {
         Text(
             text = "Start Journey",
             fontSize = 16.sp,
             fontFamily = poppinsFontFamily1,
-            color = blue
+            color = Color.White
         )
     }
 }

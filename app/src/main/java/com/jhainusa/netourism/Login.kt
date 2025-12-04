@@ -49,6 +49,7 @@ fun SecureLoginScreen(navController: NavController, context: Context = LocalCont
     var uniqueId by remember { mutableStateOf(TextFieldValue("")) }
     val prefsManager = remember { UserPreferencesManager(context) }
 
+    var openScanner by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -106,11 +107,15 @@ fun SecureLoginScreen(navController: NavController, context: Context = LocalCont
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text("Enter your unique ID", color = Color.White) },
                     leadingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.qr_code_svgrepo_com),
-                            contentDescription = "QR Code Icon",
-                            tint = Color.White
-                        )
+                        IconButton(
+                            onClick = { openScanner = true}
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.qr_code_svgrepo_com),
+                                contentDescription = "QR Code Icon",
+                                tint = Color.White
+                            )
+                        }
                     },
                     textStyle = TextStyle(
                         color = Color.White,
@@ -163,6 +168,15 @@ fun SecureLoginScreen(navController: NavController, context: Context = LocalCont
 
             Spacer(modifier = Modifier.weight(1f))
 
+        }
+        if (openScanner) {
+            QRScanner(
+                onScan = { value ->
+                    uniqueId = TextFieldValue(value)
+                    openScanner = false   // close camera after scan
+                },
+                onClose = { openScanner = false }
+            )
         }
     }
 }
