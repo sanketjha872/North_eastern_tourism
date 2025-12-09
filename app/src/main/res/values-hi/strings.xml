@@ -21,7 +21,7 @@
     <string name="elephant_falls">हाथी झरना</string>
     <string name="emergency_sos">आपातकालीन एसओएस</string>
     <string name="close">बंद करें</string>
-    <string name="press_and_hold_to_send_alert">अलर्ट भेजने के लिए दबाकर रखें</string>
+    <string name="press_and_hold_to_send_alert">एसओएस भेजने के लिए टैप करें \n बोलने के लिए एसओएस दबाएं</string>
     <string name="speak">🎤 बोलें</string>
     <string name="your_emergency_message">आपका आपातकालीन संदेश:</string>
     <string name="edit">संपादित करें</string>

@@ -1,12 +1,12 @@
 package com.jhainusa.netourism
 
-import android.R.attr.font
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,27 +38,17 @@ fun SplashScreen(navController: NavController, prefsManager: UserPreferencesMana
     }
     Box(
         modifier = Modifier.fillMaxSize()
-            .background(
-                        Color(0xFFB8DEF7)
-            ),
+            .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(30.dp)
         ) {
-            Text(
-                text = "Safe Journey",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontFamily = FontFamily(Font(R.font.manrope_bold))
-            )
-            Text(
-                text = "Travel with confidence.",
-                fontSize = 16.sp,
-                color = Color.White,
-                fontFamily = poppinsFontFamily1
+            Image(
+                painter = painterResource(R.drawable.gemini_generated_image_d1nfc1d1nfc1d1nf__1_),
+                contentDescription = null
             )
         }
     }

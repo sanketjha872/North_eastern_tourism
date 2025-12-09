@@ -21,7 +21,7 @@
     <string name="elephant_falls">ఏనుగు జలపాతం</string>
     <string name="emergency_sos">అవసర SOS</string>
     <string name="close">మూసివేయి</string>
-    <string name="press_and_hold_to_send_alert">హెచ్చరిక పంపడానికి నొక్కి పట్టుకోండి</string>
+    <string name="press_and_hold_to_send_alert">SOS పంపడానికి నొక్కండి \n మాట్లాడటానికి SOS నొక్కండి</string>
     <string name="speak">🎤 మాట్లాడండి</string>
     <string name="your_emergency_message">మీ అత్యవసర సందేశం:</string>
     <string name="edit">సవరించండి</string>

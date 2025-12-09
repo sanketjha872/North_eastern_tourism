@@ -28,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jhainusa.netourism.Map.NavigationScreen
+import com.jhainusa.netourism.Map.NearbyTouristsScreen
 import com.jhainusa.netourism.MeshNetworking.ChatViewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModel
 import com.jhainusa.netourism.UserPreferences.LocationInMap
@@ -44,6 +45,11 @@ sealed class Screen(val route: String, @StringRes val title: Int, @DrawableRes v
     object Map : Screen("map", R.string.title_map, R.drawable.maps)
     object Panic : Screen("panic", R.string.title_panic, R.drawable.panic)
     object Profile : Screen("profile", R.string.title_profile, R.drawable.profile)
+}
+
+sealed class MapScreen(val route: String) {
+    object NearbyTourists : MapScreen("nearby_tourists")
+    object SafetyZones : MapScreen("safety_zones")
 }
 
 val bottomNavItemsList = listOf(
@@ -106,7 +112,13 @@ fun MainApp(mainNav : NavController,viewModel: ChatViewModel,reportViewModel: Re
             NavHost(navController = navController, startDestination = Screen.Home.route) {
                 composable(Screen.News.route) { NewsScreen(navController) }
                 composable(Screen.Home.route) { FirstPageScreen(mainNav, navController, reportViewModel, this) }
-                composable(Screen.Map.route) { NavigationScreen(viewModel = reportViewModel) }
+                composable(Screen.Map.route) { 
+                    val mapNavController = rememberNavController()
+                    NavHost(navController = mapNavController, startDestination = MapScreen.NearbyTourists.route) {
+                        composable(MapScreen.NearbyTourists.route) { NearbyTouristsScreen(mapNavController, reportViewModel) }
+                        composable(MapScreen.SafetyZones.route) { NavigationScreen(mapNavController, reportViewModel) }
+                    }
+                }
                 composable(Screen.Panic.route) { SOSScreen(navController,viewModel) }
                 composable(Screen.Profile.route) { TouristProfileScreen(onBack = {}, onEdit = {}, navController) }
                 composable("place_details/{placeName}/{placeImageResId}/{placeLocation}") { backStackEntry ->

@@ -21,7 +21,7 @@
     <string name="elephant_falls">Elephant Falls</string>
     <string name="emergency_sos">Emergency SOS</string>
     <string name="close">Close</string>
-    <string name="press_and_hold_to_send_alert">Press and Hold to Send Alert</string>
+    <string name="press_and_hold_to_send_alert"> Tap to send SOS \n Press SOS to speak </string>
     <string name="speak">🎤 Speak</string>
     <string name="your_emergency_message">Your emergency message:</string>
     <string name="edit">Edit</string>

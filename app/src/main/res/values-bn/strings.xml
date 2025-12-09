@@ -5,12 +5,12 @@
     <string name="notifications">বিজ্ঞপ্তি</string>
     <string name="add">যোগ করুন</string>
     <string name="search_your_place">আপনার জায়গা খুঁজুন</string>
-    <string name="search_icon">অনুসন্ধান আইকন</string>
+    <string name="search_icon">অনুসন্ধان আইকন</string>
     <string name="quick_actions">দ্রুত পদক্ষেপ</string>
     <string name="emergency">হোমস্টে</string>
     <string name="safety_tips">করণীয় এবং অকরণীয়</string>
     <string name="safe_zones">নিরাপদ অঞ্চল</string>
-    <string name="report">অন্বেষণ</string>
+    <string name="report">অন্বেষণ</string>_
     <string name="recommended">প্রস্তাবিত</string>
     <string name="see_all">সব দেখুন</string>
     <string name="location_content_description">অবস্থান পিন</string>
@@ -21,7 +21,8 @@
     <string name="elephant_falls">এলিফ্যান্ট ফলস</string>
     <string name="emergency_sos">জরুরী এসওএস</string>
     <string name="close">বন্ধ করুন</string>
-    <string name="press_and_hold_to_send_alert">সতর্কতা পাঠাতে টিপুন এবং ধরে থাকুন</string>
+    <string name="press_and_hold_to_send_alert">এসওএস পাঠাতে আলতো চাপুন 
+ কথা বলতে এসওএস টিপুন</string>
     <string name="speak">🎤 বলুন</string>
     <string name="your_emergency_message">আপনার জরুরি বার্তা:</string>
     <string name="edit">সম্পাদনা করুন</string>

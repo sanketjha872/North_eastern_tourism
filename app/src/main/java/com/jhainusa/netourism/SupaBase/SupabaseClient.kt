@@ -2,6 +2,7 @@ package com.jhainusa.netourism.SupaBase
 
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
@@ -9,6 +10,8 @@ import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.jhainusa.netourism.Map.LocationService
 import com.jhainusa.netourism.SupaBase.Supabase.client
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
 import com.jhainusa.netourism.Zones.Zone
@@ -44,7 +47,7 @@ object Supabase {
 suspend fun fetchAllUsersbyBlockchainID(blockchainId : String): User? {
     return client
         .from("users")
-        .select(){
+        .select {
             filter { eq("blockchain_id", blockchainId) }
         }
         .decodeSingleOrNull<User>()
@@ -58,7 +61,7 @@ suspend fun fetchAllUsers(): List<User> {
 
 suspend fun uploadAlert(alert: Alert): Boolean {
     return try {
-        Supabase.client
+        client
             .from("alerts")
             .insert(alert)
 
@@ -75,8 +78,11 @@ suspend fun loadZones() : List<Zone> {
             .decodeList<Zone>()
 }
 
+data class TouristLocation(val latitude: Double, val longitude: Double, val name: String)
 
-class ReportViewModel( private val prefsManager: UserPreferencesManager
+
+class ReportViewModel( private val prefsManager: UserPreferencesManager,
+                       private val context: Context
 ) : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -84,9 +90,26 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
 
     private val _saved = MutableStateFlow<User?>(null)
     val saver : StateFlow<User?> = _saved
-
+    
     private val _zones = MutableStateFlow<List<Zone>>(emptyList())
     val zones = _zones.asStateFlow()
+
+    private val _nearbyTourists = MutableStateFlow<List<TouristLocation>>(emptyList())
+    val nearbyTourists = _nearbyTourists.asStateFlow()
+
+    fun fetchNearbyTourists() {
+        viewModelScope.launch {
+            // Dummy data for now
+            _nearbyTourists.value = listOf(
+                TouristLocation(25.6155141, 91.9001645, "Tourist 1"),
+                TouristLocation(25.6154186, 91.9004584, "Tourist 2"),
+                TouristLocation(25.6151686, 91.9006400, "Tourist 3"),
+                TouristLocation(25.6148596, 91.9006400, "Tourist 4"),
+                TouristLocation(25.6146096, 91.9004584, "Tourist 5"),
+                TouristLocation(25.6145141, 91.9001645, "Tourist 6")
+            )
+        }
+    }
 
     fun fetchUsers() {
         viewModelScope.launch {
@@ -106,10 +129,17 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
                 val list = loadZones()
                 Log.d("zones",list.toString())
                 _zones.value = list
+                startLocationService(list)
             } catch (e: Exception) {
                 Log.e("zones_error", e.toString())
             }
         }
+    }
+    private fun startLocationService(zones: List<Zone>) {
+        val intent = Intent(context, LocationService::class.java).apply {
+            putExtra("zones", Gson().toJson(zones))
+        }
+        context.startService(intent)
     }
 
     fun loadReportsFromNetwork(id: String) {
@@ -166,12 +196,13 @@ class ReportViewModel( private val prefsManager: UserPreferencesManager
 }
 
 class ReportViewModelFactory(
-    private val prefsManager: UserPreferencesManager
+    private val prefsManager: UserPreferencesManager,
+    private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ReportViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ReportViewModel(prefsManager) as T
+            return ReportViewModel(prefsManager, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

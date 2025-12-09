@@ -1,5 +1,6 @@
 package com.jhainusa.netourism
 
+import com.jhainusa.netourism.R
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

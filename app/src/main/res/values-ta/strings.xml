@@ -21,7 +21,7 @@
     <string name="elephant_falls">யானை நீர்வீழ்ச்சி</string>
     <string name="emergency_sos">அவசர எஸ்ஓஎஸ்</string>
     <string name="close">மூடவும்</string>
-    <string name="press_and_hold_to_send_alert">எச்சரிக்கை அனுப்ப அழுத்திப் பிடிக்கவும்</string>
+    <string name="press_and_hold_to_send_alert">SOS அனுப்ப தட்டவும் \n பேச SOS ஐ அழுத்தவும்</string>
     <string name="speak">🎤 பேசுங்கள்</string>
     <string name="your_emergency_message">உங்கள் அவசர செய்தி:</string>
     <string name="edit">திருத்து</string>

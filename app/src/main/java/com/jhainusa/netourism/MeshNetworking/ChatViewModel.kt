@@ -3,6 +3,7 @@ package com.jhainusa.netourism.MeshNetworking
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,15 +27,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jhainusa.netourism.SupaBase.Alert
 import com.jhainusa.netourism.SupaBase.ReportViewModel
 import com.jhainusa.netourism.SupaBase.ReportViewModelFactory
 import com.jhainusa.netourism.UserPreferences.UserPreferencesManager
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class ChatViewModel(private val context: Context,private val prefsManager: UserPreferencesManager) : ViewModel() {
+private const val TAG = "ChatViewModel"
+
+class ChatViewModel(private val context: Context, private val prefsManager: UserPreferencesManager) : ViewModel() {
 
     var messages = mutableStateListOf<ChatMessage>()
         private set
@@ -43,21 +48,30 @@ class ChatViewModel(private val context: Context,private val prefsManager: UserP
 
     private val json = Json { ignoreUnknownKeys = true }
 
-
+    private val reportViewModel: ReportViewModel = ReportViewModelFactory(prefsManager,context
+    ).create(ReportViewModel::class.java)
 
     fun initNearby() {
+        Log.d(TAG, "initNearby")
         nearby = NearbyManager(
             context,
             onReceive = {
                 receiveMessage(it)
-
             },
             onConnected = { addSystem("Connected!") }
         )
     }
+
+    fun cleanup() {
+        Log.d(TAG, "cleanup")
+        nearby.stopAdvertising()
+        nearby.stopDiscovery()
+        nearby.disconnectFromAllEndpoints()
+    }
+
     fun isNetworkAvailable(): Boolean {
         val connectivityManager =
-            prefsManager.appContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+            context.getSystemService(Context.CONNECTIVITY_SERVICE)
                     as ConnectivityManager
 
         val network = connectivityManager.activeNetwork
@@ -70,18 +84,34 @@ class ChatViewModel(private val context: Context,private val prefsManager: UserP
     }
 
     fun addSystem(text: String) {
+        Log.d(TAG, "addSystem: $text")
         messages.add(ChatMessage(text, false, system = true))
     }
 
-    fun sendMessage(text: String) {
-        messages.add(ChatMessage(text, true))
-        nearby.sendMessage(text)
+    fun sendMessage(alert: Alert) {
+        val alertJson = json.encodeToString(alert)
+        messages.add(ChatMessage(alert.description ?: "SOS", true))
+        if (isNetworkAvailable()) {
+            Log.d(TAG, "sendMessage: network available, sending to server")
+
+            reportViewModel.uploadAlertToServer(alert)
+        } else {
+            Log.d(TAG, "sendMessage: network not available, sending to nearby")
+            nearby.sendMessage(alertJson)
+        }
     }
 
     fun receiveMessage(text: String) {
-        messages.add(ChatMessage(text, false))
+        Log.d(TAG, "receiveMessage: $text")
+        val alert = json.decodeFromString<Alert>(text)
+        messages.add(ChatMessage(alert.description ?: "SOS", false))
+        if (isNetworkAvailable()) {
+            Log.d(TAG, "receiveMessage: network available, forwarding to server")
+            reportViewModel.uploadAlertToServer(alert)
+        }
     }
 }
+
 data class ChatMessage(
     val text: String,
     val isMine: Boolean,
@@ -113,7 +143,7 @@ fun ChatScreen(vm: ChatViewModel) {
             Button(
                 onClick = {
                     if (text.isNotBlank()) {
-                        vm.sendMessage(text)
+//                        vm.sendMessage(text)
                         text = ""
                     }
                 }
@@ -124,7 +154,7 @@ fun ChatScreen(vm: ChatViewModel) {
 
 @Composable
 fun MessageBubble(msg: ChatMessage) {
-    val align  = if (msg.isMine) Alignment.End else Alignment.Start
+    if (msg.isMine) Alignment.End else Alignment.Start
     val color = if (msg.isMine) Color(0xFFD0F0FF) else Color(0xFFEDEDED)
 
     Box(

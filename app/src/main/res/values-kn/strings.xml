@@ -21,7 +21,7 @@
     <string name="elephant_falls">ಎಲಿಫੈਂ트 ಫಾಲ್ಸ್</string>
     <string name="emergency_sos">ತುರ್ತು ಎಸ್ಒಎಸ್</string>
     <string name="close">ಮುಚ್ಚಿ</string>
-    <string name="press_and_hold_to_send_alert">ಎಚ್ಚರಿಕೆ ಕಳುಹಿಸಲು ಒತ್ತಿ ಮತ್ತು ಹಿಡಿದುಕೊಳ್ಳಿ</string>
+    <string name="press_and_hold_to_send_alert">SOS ಕಳುಹಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ \n ಮಾತನಾಡಲು SOS ಒತ್ತಿರಿ</string>
     <string name="speak">🎤 ಮಾತನಾಡಿ</string>
     <string name="your_emergency_message">ನಿಮ್ಮ ತುರ್ತು ಸಂದేశ:</string>
     <string name="edit">ಸಂಪಾದಿಸಿ</string>

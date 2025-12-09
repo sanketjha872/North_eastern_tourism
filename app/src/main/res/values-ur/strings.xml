@@ -21,7 +21,7 @@
     <string name="elephant_falls">ایلیفینٹ فالس</string>
     <string name="emergency_sos">ایمرجنسی ایس او ایس</string>
     <string name="close">بند کریں</string>
-    <string name="press_and_hold_to_send_alert">الرٹ بھیجنے کے لیے دبائیں اور تھامیں</string>
+    <string name="press_and_hold_to_send_alert">SOS بھیجنے کے لیے تھپتھپائیں \n بولنے کے لیے SOS دبائیں</string>
     <string name="speak">🎤 بولیں</string>
     <string name="your_emergency_message">آپ کا ہنگامی پیغام:</string>
     <string name="edit">ترمیم کریں</string>

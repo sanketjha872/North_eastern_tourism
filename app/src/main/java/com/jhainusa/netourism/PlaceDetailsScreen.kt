@@ -84,7 +84,7 @@ fun SharedTransitionScope.PlaceDetailsScreen(
             )
         }
 
-        Card() {
+        Card {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()

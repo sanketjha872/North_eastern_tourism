@@ -51,7 +51,6 @@ val poppinsNews = FontFamily(
 @Composable
 fun NewsScreen(navController: NavController,
                viewModel: NewsViewModel = viewModel()) {
-    var searchText by remember { mutableStateOf("") }
     var selectedChip by remember { mutableStateOf("Safety Alerts") }
     val isLoading by viewModel.isLoading.collectAsState()
 

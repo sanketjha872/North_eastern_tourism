@@ -85,7 +85,7 @@ fun TouristProfileScreen(onBack: () -> Unit, onEdit: () -> Unit,
                 .padding(paddingValues)
                 .padding(16.dp)
                 .fillMaxSize(),
-            horizontalAlignment = Alignment.Companion.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             item { ProfileHeader(user) }
@@ -98,18 +98,18 @@ fun TouristProfileScreen(onBack: () -> Unit, onEdit: () -> Unit,
 
 @Composable
 fun ProfileHeader(user: User?) {
-    Column(horizontalAlignment = Alignment.Companion.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UserImage(
             user?.image_url,
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
         )
-        Spacer(modifier = Modifier.Companion.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = user?.name ?: "",
             fontSize = 20.sp,
-            fontWeight = FontWeight.Companion.Bold,
+            fontWeight = FontWeight.Bold,
             fontFamily = poppinsFamily
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -142,10 +142,10 @@ fun BlockchainIdSection(blockchainId: String?) {
     Card(
         shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier.Companion.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            verticalAlignment = Alignment.Companion.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -155,10 +155,10 @@ fun BlockchainIdSection(blockchainId: String?) {
                 contentDescription = "Blockchain ID",
                 tint = Color.Gray,
             )
-            Spacer(modifier = Modifier.Companion.width(8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 "Blockchain ID",
-                fontWeight = FontWeight.Companion.Black,
+                fontWeight = FontWeight.Black,
                 fontFamily = poppinsFamily
             )
 
@@ -200,6 +200,8 @@ fun UserDetailsCard(user: User?) {
             InfoRow("Email Address", user?.email ?: "")
             Divider(modifier = Modifier.padding(vertical = 8.dp).background(Color.LightGray))
             InfoRow("Document Type", user?.documentType ?: "")
+            Divider(modifier = Modifier.padding(vertical = 8.dp).background(Color.LightGray))
+            InfoRow("Emergency Contacts", "Father : 9871236459\nBrother : 7498561363")
         }
     }
 }
@@ -211,12 +213,12 @@ fun InfoRow(label: String, value: String) {
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Companion.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = label, color = Color.Gray, fontSize = 14.sp, fontFamily = poppinsFamily)
         Text(
             text = value,
-            fontWeight = FontWeight.Companion.SemiBold,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
             fontFamily = poppinsFamily
         )
@@ -227,7 +229,7 @@ fun InfoRow(label: String, value: String) {
 @Preview(showBackground = true)
 @Composable
 fun TouristProfileScreenPreview() {
-    val dummyUser = User(
+    User(
         id = "1",
         touristId = "987-654-3210",
         blockchainId = "0x4a...f3e1",

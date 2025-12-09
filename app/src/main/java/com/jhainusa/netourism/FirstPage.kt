@@ -12,15 +12,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.areNavigationBarsVisible
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,8 +23,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,8 +31,6 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -48,9 +38,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,7 +47,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -99,7 +85,6 @@ fun SharedTransitionScope.FirstPageScreen(
     viewModel: ReportViewModel,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-    var searchQuery by remember { mutableStateOf("") }
 
     val location by LocationRepository.lastKnownLocation.collectAsState()
     val currentLocation by LocationRepository.currentPlaceName.collectAsState()
@@ -134,13 +119,6 @@ fun SharedTransitionScope.FirstPageScreen(
                                     color = Color(0xFF262626)
                                 )
                             }
-//                            Text(
-//                                stringResource(R.string.safety_level),
-//                                fontFamily = poppinsFontFamily1,
-//                                fontSize = 12.sp,
-//                                fontWeight = FontWeight.Bold,
-//                                color = Color(0xFF2BA02D)
-//                            )
                         }
                     }
                 },
@@ -217,39 +195,6 @@ fun SharedTransitionScope.FirstPageScreen(
                     safe(mainNav)
                     Spacer(modifier = Modifier.height(24.dp))
 
-//                    OutlinedTextField(
-//                        value = searchQuery,
-//                        onValueChange = { searchQuery = it },
-//                        placeholder = {
-//                            Text(
-//                                stringResource(R.string.search_your_place),
-//                                fontFamily = poppinsFontFamily1
-//                            )
-//                        },
-//                        leadingIcon = {
-//                            Icon(
-//                                Icons.Filled.Search,
-//                                contentDescription = stringResource(R.string.search_icon)
-//                            )
-//                        },
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 5.dp),
-//                        shape = RoundedCornerShape(20.dp),
-//                        textStyle = TextStyle(
-//                            fontSize = 16.sp,
-//                            fontFamily = poppinsFontFamily1,
-//                        ),
-//                        colors = OutlinedTextFieldDefaults.colors(
-//                            focusedBorderColor = Color.Transparent,
-//                            unfocusedBorderColor = Color.Transparent,
-//                            focusedContainerColor = Color.White,
-//                            unfocusedContainerColor = Color.White
-//                        )
-//                    )
-
-                    //check(mainNav)
-                    Spacer(modifier = Modifier.height(26.dp))
                     QuickActionsSection(mainNav)
                     Spacer(modifier = Modifier.height(26.dp))
 
@@ -257,6 +202,18 @@ fun SharedTransitionScope.FirstPageScreen(
                         navController = navController,
                         animatedVisibilityScope = animatedVisibilityScope
                     )
+
+                    Spacer(modifier = Modifier.height(26.dp))
+
+                    location?.let {
+                        Text(
+                            text = "Current Location: ${it.latitude}, ${it.longitude}",
+                            fontFamily = poppinsFontFamily1,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+                        )
+                    }
                 }
             }
         }
@@ -439,7 +396,7 @@ fun safe(mainNav: NavController){
             fontSize = 18.sp,
             color = Color(0xFF2BA02D),
             fontWeight = FontWeight.Bold)
-        Text(text = "92%", fontFamily = poppinsFontFamily1,
+        Text(text = "70%", fontFamily = poppinsFontFamily1,
             fontSize = 22.sp, fontWeight = FontWeight.Bold)
     }
 }

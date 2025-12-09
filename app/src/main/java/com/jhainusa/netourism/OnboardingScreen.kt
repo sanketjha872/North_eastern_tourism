@@ -1,6 +1,5 @@
 package com.jhainusa.netourism
 
-import android.view.WindowInsets
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

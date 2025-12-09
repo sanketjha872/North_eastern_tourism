@@ -2,7 +2,6 @@ package com.jhainusa.netourism
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,13 +23,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,6 +36,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,36 +49,49 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jhainusa.netourism.Gemini.DosAndDontsViewModel
+import com.jhainusa.netourism.Gemini.GeminiState
+import com.jhainusa.netourism.Map.LocationRepository
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Advice(val title: String, val description: String)
 
-val garoDos = listOf(
-    Advice("Respect the Nokma", "Acknowledge the village headman (Nokma) when you arrive."),
-    Advice("Participate in Wangala", "If visiting during the festival, show enthusiasm and respect for the harvest celebration.")
-)
-
-val garoDonts = listOf(
-    Advice("Touch Sacred Groves", "Avoid entering or disturbing forests considered sacred by the community."),
-    Advice("Question Matrilineal Lineage", "The Garo society is matrilineal; show respect for their social structure.")
-)
-
-val tribes = listOf("Garo Hills", "Khasi Hills", "Naga villages")
+val tribes = listOf("Shillong Meghalaya")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DosAndDontsScreen() {
-    var selectedTribe by remember { mutableStateOf("Garo Hills") }
+fun DosAndDontsScreen(viewModel: DosAndDontsViewModel = viewModel()) {
+    var selectedTribe by remember { mutableStateOf("Shillong Meghalaya") }
+    val placeName by LocationRepository.currentPlaceName.collectAsState()
+    val geminiState by viewModel.geminiState.collectAsState()
+
+    LaunchedEffect(placeName) {
+        placeName?.let {
+            if (it.contains("Garo", ignoreCase = true)) {
+                selectedTribe = "Garo Hills"
+            } else if (it.contains("Khasi", ignoreCase = true)) {
+                selectedTribe = "Khasi Hills"
+            } else if (it.contains("Jaintia", ignoreCase = true)) {
+                selectedTribe = "Jaintia villages"
+            }
+        }
+    }
+
+    LaunchedEffect(selectedTribe) {
+        viewModel.generateAdvice(selectedTribe)
+    }
 
     Scaffold(
         modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues()),
         contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             TopAppBar(
-                title = { Text("Do's & Don'ts", fontFamily = manropeMedium, fontWeight = FontWeight.Bold) },
+                title = { Text("Do's & Don'ts", fontWeight = FontWeight.Bold,
+                    fontFamily = manropeMedium) },
                 navigationIcon = {
                     IconButton(onClick = { /* Handle back press */ }) {
                         Icon(painterResource(R.drawable.left), contentDescription = "Back",
@@ -91,7 +103,7 @@ fun DosAndDontsScreen() {
         },
         bottomBar = {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { viewModel.generateAdvice(selectedTribe) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -99,7 +111,8 @@ fun DosAndDontsScreen() {
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0077B6))
             ) {
-                Text("Learn more about local tribes", fontFamily = manropeMedium, fontSize = 16.sp, color = Color.White)
+                Text("Generate New Advice", fontSize = 16.sp, color = Color.White,
+                    fontFamily = manropeMedium)
             }
         }
     ) { paddingValues ->
@@ -126,7 +139,15 @@ fun DosAndDontsScreen() {
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
-
+//            item{
+//                Text(
+//                    text = "Tribes in Shillong",
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 16.sp,
+//                    fontFamily = manropeMedium
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//            }
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -142,42 +163,59 @@ fun DosAndDontsScreen() {
                             ),
                             shape = RoundedCornerShape(20.dp)
                         ) {
-                            Text(tribe, fontFamily = manropeMedium)
+                            Text(tribe)
                         }
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
 
-            item {
-                Text(
-                    text = "DO'S ($selectedTribe)",
-                    fontFamily = manropeMedium,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+            when (val state = geminiState) {
+                is GeminiState.Loading -> {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+                is GeminiState.Success -> {
+                    item {
+                        Text(
+                            text = "DO'S ($selectedTribe)",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            fontFamily = manropeMedium
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
-            items(garoDos) { advice ->
-                AdviceCard(advice = advice, isDo = true)
-                Spacer(modifier = Modifier.height(12.dp))
-            }
+                    items(state.dos) { advice ->
+                        AdviceCard(advice = advice, isDo = true)
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
 
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "DON'TS ($selectedTribe)",
-                    fontFamily = manropeMedium,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                    item {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "DON'TS ($selectedTribe)",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            fontFamily = manropeMedium
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
-            items(garoDonts) { advice ->
-                AdviceCard(advice = advice, isDo = false)
-                Spacer(modifier = Modifier.height(12.dp))
+                    items(state.donts) { advice ->
+                        AdviceCard(advice = advice, isDo = false)
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                }
+                is GeminiState.Error -> {
+                    item {
+                        Text(state.message, color = Color.Red,
+                            fontFamily = manropeMedium)
+                    }
+                }
             }
         }
     }
@@ -213,16 +251,16 @@ fun AdviceCard(advice: Advice, isDo: Boolean) {
             Column {
                 Text(
                     text = advice.title,
-                    fontFamily = manropeMedium,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    fontFamily = manropeMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = advice.description,
-                    fontFamily = manropeMedium,
                     color = Color.Gray,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    fontFamily = manropeMedium
                 )
             }
         }

@@ -108,7 +108,7 @@ fun QRScanner(
 @OptIn(ExperimentalGetImage::class)
 @Composable
 fun CameraPreview(onScan: (String) -> Unit) {
-    val context = LocalContext.current
+    LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
     AndroidView(

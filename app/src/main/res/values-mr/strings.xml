@@ -21,7 +21,7 @@
     <string name="elephant_falls">एलिफंट फॉल्स</string>
     <string name="emergency_sos">आपत्कालीन एसओएस</string>
     <string name="close">बंद करा</string>
-    <string name="press_and_hold_to_send_alert">सूचना पाठवण्यासाठी दाबा आणि धरून ठेवा</string>
+    <string name="press_and_hold_to_send_alert">SOS पाठवण्यासाठी टॅप करा \n बोलण्यासाठी SOS दाबा</string>
     <string name="speak">🎤 बोला</string>
     <string name="your_emergency_message">तुमचा आपत्कालीन संदेश:</string>
     <string name="edit">संपादित करा</string>

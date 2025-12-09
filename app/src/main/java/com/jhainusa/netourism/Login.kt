@@ -47,7 +47,7 @@ val poppinsLogin = FontFamily(
 fun SecureLoginScreen(navController: NavController, context: Context = LocalContext.current,
                       viewModel: ReportViewModel) {
     var uniqueId by remember { mutableStateOf(TextFieldValue("")) }
-    val prefsManager = remember { UserPreferencesManager(context) }
+    remember { UserPreferencesManager(context) }
 
     var openScanner by remember { mutableStateOf(false) }
 

@@ -60,8 +60,7 @@ fun DrawerContent(context : Context = LocalContext.current,
             Spacer(modifier = Modifier.height(10.dp))
 
             // User Info
-        LazyColumn(
-        ) {
+        LazyColumn {
             item {
                 Card(
                     modifier = Modifier.padding(horizontal = 18.dp),

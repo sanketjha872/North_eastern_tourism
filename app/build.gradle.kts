@@ -117,5 +117,9 @@ dependencies {
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.0")
+
+    // Gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.5.0")
 
 }

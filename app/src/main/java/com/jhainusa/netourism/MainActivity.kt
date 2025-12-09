@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             add(Manifest.permission.BLUETOOTH_CONNECT)
             add(Manifest.permission.BLUETOOTH_SCAN)
+            add(Manifest.permission.BLUETOOTH_ADVERTISE)
+            add(Manifest.permission.BLUETOOTH_ADMIN)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(Manifest.permission.NEARBY_WIFI_DEVICES)
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         val reportViewModel = ViewModelProvider(
             this,
-            ReportViewModelFactory(prefsManager)
+            ReportViewModelFactory(prefsManager, applicationContext)
         ).get(ReportViewModel::class.java)
 
         prefsManager.getLanguage()?.let {
@@ -80,12 +82,31 @@ class MainActivity : AppCompatActivity() {
 
         val launcher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
-                Log.d("MainActivity", "Location permission granted, starting service")
-                startLocationService()
+        ) { permissionsResult ->
+            val fineLocationGranted = permissionsResult.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)
+            val coarseLocationGranted = permissionsResult.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)
+
+            if (fineLocationGranted || coarseLocationGranted) {
+                Log.d("MainActivity", "Location permission granted, starting service.")
+                Intent(applicationContext, LocationService::class.java).also {
+                    startService(it)
+                }
             } else {
-                Log.d("MainActivity", "Location permission not granted")
+                Log.e("MainActivity", "Location permission not granted, cannot start service.")
+            }
+
+            // Start mesh core only after all bluetooth permissions are granted
+            val areBluetoothPermissionsGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                permissionsResult.getOrDefault(Manifest.permission.BLUETOOTH_CONNECT, false) &&
+                        permissionsResult.getOrDefault(Manifest.permission.BLUETOOTH_SCAN, false) &&
+                        permissionsResult.getOrDefault(Manifest.permission.BLUETOOTH_ADVERTISE, false)
+            } else true
+
+            if (areBluetoothPermissionsGranted) {
+                Log.d("MainActivity", "Bluetooth permissions granted, initializing mesh core.")
+                MeshCore.init(applicationContext, prefsManager)
+            } else {
+                Log.e("MainActivity", "Bluetooth permissions not granted, cannot initialize mesh core.")
             }
         }
 
@@ -93,17 +114,16 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "Requesting permissions")
         launcher.launch(permissions.toTypedArray())
 
-        // Initialize mesh networking (only once)
-        MeshCore.init(applicationContext, prefsManager)
-
         setContent {
             val navController = rememberNavController()
 
             NETourismTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    val startSos = intent.getBooleanExtra("start_sos", false)
+                    val sosAction = intent.getStringExtra("sos_action")
                     AnimatedNavHost(
                         navController = navController,
-                        startDestination = "SplashScreen",
+                        startDestination = if (startSos) "AllScreenNav" else "SplashScreen",
                         enterTransition = {
                             slideInHorizontally { it } + fadeIn(tween(200))
                         },
@@ -147,16 +167,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun startLocationService() {
-        Log.d("MainActivity", "startLocationService called")
-        val intent = Intent(this, LocationService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
         }
     }
 }

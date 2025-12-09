@@ -21,7 +21,7 @@
     <string name="elephant_falls">ଏଲିଫ୍ୟାଣ୍ଟ ଫଲ୍ସ</string>
     <string name="emergency_sos">ଜରୁରୀକାଳୀନ ଏସଓଏସ</string>
     <string name="close">ବନ୍ଦ କରନ୍ତୁ</string>
-    <string name="press_and_hold_to_send_alert">ସତର୍କ ସୂଚନା ପଠାଇବାକୁ ଦବାଇ ଧରନ୍ତୁ</string>
+    <string name="press_and_hold_to_send_alert">SOS ପଠାଇବାକୁ ଟ୍ୟାପ୍ କରନ୍ତୁ \n କହିବାକୁ SOS ଦବାନ୍ତୁ</string>
     <string name="speak">🎤 କୁହନ୍ତୁ</string>
     <string name="your_emergency_message">ଆପଣଙ୍କ ଜରୁରୀକାଳୀନ ସନ୍ଦେଶ:</string>
     <string name="edit">ସମ୍ପାଦନ କରନ୍ତୁ</string>
